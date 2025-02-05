@@ -3,18 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Models Timeline - Evolution of AI</title>
+    <title>AI Models Timeline & Model Comparisons</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React and ReactDOM from CDN -->
-    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX transpilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- lucide-react UMD build -->
-    <script src="https://unpkg.com/lucide-react/dist/index.umd.js"></script>
     <style>
-      /* Custom CSS for animations and modal styling */
+      /* Global Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+        color: #002D62; /* Penn State Blue */
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1, h2, h3 {
+        font-family: Arial, sans-serif;
+      }
+      /* Navigation Bar */
+      .navbar {
+        background-color: #002D62;
+        color: #FFB81C;
+        padding: 15px 20px;
+      }
+      .navbar a {
+        color: #FFB81C;
+        margin-left: 20px;
+        text-decoration: none;
+      }
+      /* Timeline Styles */
+      .timeline {
+        position: relative;
+        padding: 20px 0;
+        margin: 40px 0;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background-color: #002D62;
+      }
+      .timeline-item {
+        position: relative;
+        width: 50%;
+        padding: 20px 40px;
+        box-sizing: border-box;
+      }
+      .timeline-item:nth-child(odd) {
+        left: 0;
+        text-align: right;
+      }
+      .timeline-item:nth-child(even) {
+        left: 50%;
+        text-align: left;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #FFB81C; /* Penn State Gold */
+        border: 4px solid #002D62;
+        z-index: 1;
+      }
+      .timeline-item:nth-child(odd)::before {
+        right: -10px;
+      }
+      .timeline-item:nth-child(even)::before {
+        left: -10px;
+      }
+      .timeline-item .date {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .timeline-item .title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+      }
+      .timeline-item .description {
+        font-size: 0.95em;
+      }
+      /* Modal Styles */
+      .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .modal-content {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 20px;
+      }
+      /* Fade-in Animation */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -22,284 +111,143 @@
       .animate-fadeIn {
         animation: fadeIn 0.8s forwards;
       }
-      .modal-backdrop {
-        background-color: rgba(0, 0, 0, 0.4);
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .timeline::before {
+          left: 20px;
+        }
+        .timeline-item {
+          width: 100%;
+          padding-left: 60px;
+          padding-right: 20px;
+          text-align: left;
+        }
+        .timeline-item::before {
+          left: 20px;
+        }
       }
-      /* Additional spacing to make the code longer and more organized */
-      .spacer { margin: 20px 0; }
-      /* Styles for the comment section */
-      .comment-box {
-        border: 1px solid #002D62;
+      /* Comparison Section Styles */
+      .tabs button {
+        padding: 10px 20px;
+        border: 2px solid #002D62;
+        background-color: #FFB81C;
+        color: #002D62;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .tabs button.active {
+        background-color: #002D62;
+        color: #FFB81C;
+      }
+      .comparison-content {
+        border: 2px solid #002D62;
+        padding: 20px;
+        margin-top: 20px;
         border-radius: 5px;
-        padding: 10px;
-        margin-top: 10px;
+        background-color: #fff;
       }
-      .comment {
-        border-bottom: 1px dashed #002D62;
-        padding: 5px 0;
-      }
-      .comment:last-child {
-        border-bottom: none;
+      /* Back to Top Button */
+      .back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        background-color: #002D62;
+        color: #FFB81C;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5em;
       }
     </style>
   </head>
-  <body class="bg-white text-black">
+  <body>
     <!-- Root element for React -->
     <div id="root"></div>
+    <!-- Load React, ReactDOM, and Babel -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React Code -->
     <script type="text/babel">
-      // Destructure necessary hooks from React
       const { useState, useEffect, useRef } = React;
-      
-      // Destructure lucide-react icons from the global "lucideReact" object
-      const {
-        Rocket,
-        Dumbbell,
-        Cpu,
-        Server,
-        Robot,
-        MessageSquare,
-        Monitor,
-        Zap,
-        BookOpen,
-        Code,
-        Database,
-        Search,
-        Users,
-        Shield,
-        ChevronDown,
-        ChevronUp,
-        XCircle,
-        Heart
-      } = lucideReact;
-      
-      // ======================================
-      // Helper Functions
-      // ======================================
-      
-      // parseDate: Convert a date string (or a range like "2023-2024") to a Date object.
-      const parseDate = (dateStr) => {
-        if (dateStr.includes('-')) {
-          return new Date(dateStr.split('-')[0]);
-        }
-        return new Date(dateStr);
-      };
-      
-      // ======================================
-      // Sample Timeline Data (Chronological Order)
-      // ======================================
-      
-      const timelineData = [
-        {
-          date: "December 2015",
-          title: "OpenAI Founded",
-          description: "OpenAI is founded to drive breakthrough AI research.",
-          details: "Established with $1B in funding, OpenAI played a pivotal role in advancing AI and setting the stage for transformative innovation.",
-          Icon: Rocket
-        },
-        {
-          date: "April 2016",
-          title: "OpenAI Gym Launched",
-          description: "Launch of OpenAI Gym for reinforcement learning research.",
-          details: "Gym standardized RL experiments and evaluation methods, becoming essential for AI researchers worldwide.",
-          Icon: Dumbbell
-        },
-        {
-          date: "June 2018",
-          title: "GPT Released",
-          description: "The first GPT model is introduced, sparking an NLP revolution.",
-          details: "Transformer-based language models revolutionized text generation, paving the way for future innovations.",
-          Icon: Cpu
-        },
-        {
-          date: "February 2019",
-          title: "GPT-2 Launched",
-          description: "GPT-2 demonstrates coherent text generation over long passages.",
-          details: "GPT-2 raised discussions about AI safety while showcasing remarkable text quality.",
-          Icon: Server
-        },
-        {
-          date: "June 2020",
-          title: "GPT-3 Released",
-          description: "GPT-3 debuts with 175B parameters, transforming NLP.",
-          details: "GPT-3’s unprecedented scale enabled fine-tuning and custom applications, paving the way for Custom GPTs.",
-          Icon: Robot
-        },
-        {
-          date: "November 2022",
-          title: "ChatGPT Launched",
-          description: "ChatGPT, powered by GPT-3.5, gains widespread acclaim for its conversational abilities.",
-          details: "Its interactive nature brought AI to the mainstream and demonstrated the potential for user-friendly, real-time applications.",
-          Icon: MessageSquare
-        },
-        {
-          date: "March 2023",
-          title: "GPT-4 Introduced",
-          description: "GPT-4 is unveiled with multimodal capabilities (text and image).",
-          details: "GPT-4 offers enhanced reasoning, creativity, and technical performance—a major evolution from GPT-3.",
-          Icon: Monitor
-        },
-        {
-          date: "May 2024",
-          title: "GPT-4o ('Omni') Announced",
-          description: "GPT-4o delivers faster processing and broader capabilities than GPT-4.",
-          details: "GPT-4o represents iterative improvements in speed and performance, expanding the practical applications of AI.",
-          Icon: Zap
-        },
-        {
-          date: "September 2024",
-          title: "o1-preview & o1-mini Released",
-          description: "New O1 models focus on structured reasoning for complex tasks.",
-          details: "Designed to handle intricate problem solving, these models distinguish themselves from the GPT-4 series with advanced reasoning techniques.",
-          Icon: BookOpen
-        },
-        {
-          date: "December 2024",
-          title: "Full Release of o1",
-          description: "The complete O1 model is released, enhancing technical problem-solving capabilities.",
-          details: "O1’s full release marks a substantial improvement in competitive programming, mathematics, and scientific research.",
-          Icon: Code
-        },
-        {
-          date: "January 2025",
-          title: "o3-mini & o3-mini-high Launched",
-          description: "Successors to O1-mini offer advanced reasoning for specialized tasks.",
-          details: "Optimized for targeted applications, the O3 series clearly distinguishes itself from the GPT-4 family.",
-          Icon: Database
-        },
-        {
-          date: "February 2025",
-          title: "'Deep Research' Released",
-          description: "A service combining advanced reasoning with web search for comprehensive reports.",
-          details: "Deep Research is a leap toward autonomous, AI-driven data analysis and research.",
-          Icon: Search
-        },
-        {
-          date: "2023-2024",
-          title: "Google's Gemini Series",
-          description: "Google unveils Gemini, a multimodal model integrated into Bard and other services.",
-          details: "Gemini represents Google's push into advanced AI, emphasizing collaboration and diverse task handling.",
-          Icon: Users
-        },
-        {
-          date: "2024",
-          title: "Claude 3 Series",
-          description: "Anthropic releases Claude 3 with enhanced reasoning and safety features.",
-          details: "Claude 3 focuses on secure and reliable AI, offering improved truthfulness and robust reasoning.",
-          Icon: Shield
-        }
-      ];
-      
-      // Ensure the timeline data is sorted in chronological order
-      timelineData.sort((a, b) => parseDate(a.date) - parseDate(b.date));
       
       // ======================================
       // Navigation Bar Component
       // ======================================
-      const NavBar = () => {
-        return (
-          <nav className="w-full bg-blue-600 text-white p-4 shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
-              <h1 className="text-3xl font-bold">AI Models Timeline</h1>
-              <div>
-                <a href="#overview" className="mr-4 hover:underline">Overview</a>
-                <a href="#timeline" className="hover:underline">Timeline</a>
-              </div>
-            </div>
-          </nav>
-        );
-      };
-      
-      // ======================================
-      // Overview Component: Explaining GPTs & Custom GPTs
-      // ======================================
-      const Overview = () => {
-        return (
-          <section id="overview" className="container mx-auto p-8">
-            <h2 className="text-3xl font-bold text-center mb-6">Understanding GPTs & Custom GPTs</h2>
-            <div className="flex flex-col md:flex-row items-center">
-              <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
-                {/* Using a rocket icon as a visual element */}
-                <Rocket className="w-24 h-24 text-blue-600" />
-              </div>
-              <div className="text-lg leading-relaxed">
-                <p className="mb-4">
-                  <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models that leverage the transformer architecture to generate human-like text. They are pre-trained on enormous datasets and fine-tuned for various tasks.
-                </p>
-                <p className="mb-4">
-                  <strong>Custom GPTs</strong> build on these models by tailoring their behavior to meet specialized needs—bridging the gap between general-purpose AI and domain-specific expertise.
-                </p>
-                <p>
-                  Learn more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Custom GPTs</a>.
-                </p>
-              </div>
-            </div>
-          </section>
-        );
-      };
-      
-      // ======================================
-      // Comment Section Component for Timeline Items
-      // ======================================
-      const CommentSection = ({ comments, onAddComment }) => {
-        const [commentInput, setCommentInput] = useState("");
-        
-        const handleSubmit = (e) => {
-          e.preventDefault();
-          if (commentInput.trim() !== "") {
-            onAddComment(commentInput);
-            setCommentInput("");
-          }
-        };
-        
-        return (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2">Comments</h3>
-            <form onSubmit={handleSubmit} className="mb-4">
-              <input
-                type="text"
-                value={commentInput}
-                onChange={(e) => setCommentInput(e.target.value)}
-                placeholder="Add a comment..."
-                className="w-full p-2 border border-blue-600 rounded"
-              />
-              <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Submit
-              </button>
-            </form>
-            <div className="comment-box">
-              {comments.length === 0 ? (
-                <p>No comments yet.</p>
-              ) : (
-                comments.map((comment, index) => (
-                  <div key={index} className="comment">
-                    {comment}
-                  </div>
-                ))
-              )}
+      const NavBar = () => (
+        <nav className="navbar">
+          <div className="container flex justify-between items-center">
+            <h1 className="text-3xl font-bold">AI Models Timeline</h1>
+            <div>
+              <a href="#overview">Overview</a>
+              <a href="#timeline">Timeline</a>
+              <a href="#comparisons">Model Comparisons</a>
             </div>
           </div>
-        );
+        </nav>
+      );
+      
+      // ======================================
+      // Overview Component
+      // ======================================
+      const Overview = () => (
+        <section id="overview" className="container my-8">
+          <h2 className="text-3xl font-bold text-center mb-6">Understanding GPTs & Custom GPTs</h2>
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="mr-8 mb-4 md:mb-0">
+              {/* Simple icon representation */}
+              <span style={{fontSize: "4rem", color: "#002D62"}}>🤖</span>
+            </div>
+            <div className="text-lg">
+              <p className="mb-4">
+                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models that leverage the transformer architecture to generate human-like text. They are pre-trained on vast datasets and fine-tuned for specific tasks.
+              </p>
+              <p className="mb-4">
+                <strong>Custom GPTs</strong> build on these models by tailoring their behavior to meet specialized needs, bridging the gap between general-purpose AI and domain-specific expertise.
+              </p>
+              <p>
+                Learn more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Custom GPTs</a>.
+              </p>
+            </div>
+          </div>
+        </section>
+      );
+      
+      // ======================================
+      // Timeline Data & Helper Function for Sorting
+      // ======================================
+      const timelineData = [
+        { date: "December 2015", title: "OpenAI Founded", description: "OpenAI is founded by tech leaders, setting a new direction in AI research.", details: "Established with a $1B pledge, OpenAI marked a pivotal moment in AI innovation." },
+        { date: "April 2016", title: "OpenAI Gym Launched", description: "Launch of OpenAI Gym, an open-source toolkit for reinforcement learning research.", details: "Gym standardized RL experiments and evaluation methods worldwide." },
+        { date: "June 2018", title: "GPT Released", description: "The first GPT model is introduced, sparking an NLP revolution.", details: "Transformer-based models changed the text generation landscape." },
+        { date: "February 2019", title: "GPT-2 Launched", description: "GPT-2 demonstrates coherent text generation over long passages.", details: "Its impressive quality raised discussions on AI safety." },
+        { date: "June 2020", title: "GPT-3 Released", description: "GPT-3 debuts with 175B parameters, transforming NLP.", details: "GPT-3 enabled fine-tuning and laid the groundwork for Custom GPTs." },
+        { date: "November 2022", title: "ChatGPT Launched", description: "ChatGPT, powered by GPT-3.5, gains acclaim for its conversational abilities.", details: "ChatGPT brought interactive AI to the mainstream." },
+        { date: "March 2023", title: "GPT-4 Introduced", description: "GPT-4 is unveiled with multimodal capabilities.", details: "GPT-4 enhances reasoning, creativity, and performance dramatically." },
+        { date: "May 2024", title: "GPT-4o ('Omni') Announced", description: "GPT-4o is announced as an upgraded version with faster processing.", details: "It builds on GPT-4 with speed and broader capabilities." },
+        { date: "September 2024", title: "o1-preview & o1-mini Released", description: "New O1 models focus on structured reasoning for complex tasks.", details: "O1 models emphasize specialized, multi-step reasoning distinct from GPT-4." },
+        { date: "December 2024", title: "Full Release of o1", description: "The complete O1 model is released, boosting technical problem-solving.", details: "O1 enhances competitive programming, math, and scientific research." },
+        { date: "January 2025", title: "o3-mini & o3-mini-high Launched", description: "O3 series models offer advanced reasoning for specialized tasks.", details: "Optimized for niche applications, O3 is lighter and more efficient than GPT-4." },
+        { date: "February 2025", title: "'Deep Research' Released", description: "A service combining advanced reasoning and web search for reports.", details: "Deep Research is a leap toward autonomous, AI-driven data analysis." },
+        { date: "2024", title: "Claude 3 Series", description: "Anthropic releases Claude 3 with enhanced reasoning and safety.", details: "Claude 3 focuses on secure, reliable AI with improved truthfulness." },
+        { date: "2023-2024", title: "Google's Gemini Series", description: "Google unveils Gemini, a multimodal model integrated into Bard.", details: "Gemini is designed for collaboration and diverse task handling." }
+      ];
+      
+      const sortTimeline = (data) => {
+        return data.sort((a, b) => {
+          const dateA = a.date.includes('-') ? new Date(a.date.split('-')[0]) : new Date(a.date);
+          const dateB = b.date.includes('-') ? new Date(b.date.split('-')[0]) : new Date(b.date);
+          return dateA - dateB;
+        });
       };
+      
+      const sortedTimeline = sortTimeline(timelineData);
       
       // ======================================
       // Timeline Item Component
       // ======================================
       const TimelineItem = ({ item, index, onOpenModal }) => {
-        // Local state for like count and comments for this timeline item
-        const [likes, setLikes] = useState(0);
-        const [comments, setComments] = useState([]);
-        
-        // Function to handle like button click
-        const handleLike = () => {
-          setLikes(likes + 1);
-        };
-        
-        // Function to add a new comment
-        const addComment = (newComment) => {
-          setComments([...comments, newComment]);
-        };
-        
-        // Determine positioning based on index (alternating left/right)
         const isLeft = index % 2 === 0;
         const itemStyle = {
           position: "relative",
@@ -315,8 +263,8 @@
           width: "20px",
           height: "20px",
           borderRadius: "50%",
-          background: "#FFB81C", // Penn State Gold
-          border: "4px solid #002D62", // Penn State Blue
+          background: "#FFB81C",
+          border: "4px solid #002D62",
           zIndex: 1,
           right: isLeft ? "-10px" : "auto",
           left: isLeft ? "auto" : "-10px"
@@ -326,118 +274,127 @@
           <div style={itemStyle} className="timeline-item">
             <div className="date" style={{ fontWeight: "bold", marginBottom: "10px" }}>{item.date}</div>
             <div className="title" style={{ fontSize: "1.2em", marginBottom: "10px" }}>{item.title}</div>
-            <div className="description" style={{ fontSize: "0.95em", marginBottom: "10px" }}>{item.description}</div>
-            {/* Dot marker */}
+            <div className="description" style={{ fontSize: "0.95em" }}>{item.description}</div>
             <div style={dotStyle}></div>
-            {/* Interactive buttons */}
-            <div className="flex justify-center space-x-4 mt-4">
-              <button onClick={handleLike} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none flex items-center">
-                <Heart className="w-4 h-4 mr-1" /> Like ({likes})
+            <div className="mt-4">
+              <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
+                Learn More
               </button>
-              <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none flex items-center">
-                <ChevronDown className="w-4 h-4 mr-1" /> Learn More
-              </button>
-            </div>
-            {/* Comment Section for this timeline item */}
-            <CommentSection comments={comments} onAddComment={addComment} />
-          </div>
-        );
-      };
-      
-      // ======================================
-      // Modal Component for detailed view of timeline event
-      // ======================================
-      const Modal = ({ item, onClose }) => {
-        return (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
-            <div className="bg-white rounded-lg shadow-xl max-w-lg mx-auto z-50 p-6 animate-fadeIn">
-              <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 hover:text-blue-800 focus:outline-none" aria-label="Close">
-                <XCircle className="w-6 h-6" />
-              </button>
-              <div className="mb-4 flex justify-center">
-                {item.Icon && <item.Icon className="w-16 h-16 text-blue-600" />}
-              </div>
-              <h2 className="text-2xl font-bold text-blue-900 mb-2 text-center">{item.title}</h2>
-              <div className="text-gray-700 mb-4">{item.details}</div>
-              <div className="text-center">
-                <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
-                  Close
-                </button>
-              </div>
             </div>
           </div>
         );
       };
       
       // ======================================
-      // Timeline Component with search and layout toggle
+      // Modal Component for Detailed Information
+      // ======================================
+      const Modal = ({ item, onClose }) => (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
+          <div className="modal-content animate-fadeIn">
+            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 focus:outline-none" aria-label="Close">
+              <XCircle width="24" height="24" />
+            </button>
+            <h2 className="text-2xl font-bold mb-2 text-center">{item.title}</h2>
+            <p className="mb-4">{item.details}</p>
+            <div className="text-center">
+              <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+      
+      // ======================================
+      // Timeline Component
       // ======================================
       const Timeline = () => {
-        const [searchQuery, setSearchQuery] = useState("");
-        const [layout, setLayout] = useState("horizontal"); // "horizontal" or "vertical"
         const [modalItem, setModalItem] = useState(null);
-        
-        // Filter timeline data based on search query
-        const filteredData = timelineData.filter(item => {
-          const q = searchQuery.toLowerCase();
-          return item.title.toLowerCase().includes(q) ||
-                 item.description.toLowerCase().includes(q) ||
-                 (item.details && item.details.toLowerCase().includes(q));
-        });
-        
         return (
-          <section id="timeline" className="container mx-auto p-8">
-            <h1 className="text-center text-4xl font-bold text-blue-900 mb-6">AI Models Timeline</h1>
-            {/* Search and Layout Toggle Controls */}
-            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search timeline events..."
-                className="w-full md:w-64 p-2 border border-blue-600 rounded focus:outline-none focus:ring focus:border-blue-500"
-                aria-label="Search timeline events"
-              />
-              <button onClick={() => setLayout(layout === "horizontal" ? "vertical" : "horizontal")} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
-                {layout === "horizontal" ? "Switch to Vertical" : "Switch to Horizontal"}
-              </button>
+          <section id="timeline" className="container my-8">
+            <h1 className="text-center text-4xl font-bold mb-6">AI Models Timeline</h1>
+            <div className="timeline">
+              {sortedTimeline.map((item, index) => (
+                <TimelineItem key={index} item={item} index={index} onOpenModal={setModalItem} />
+              ))}
             </div>
-            {/* Timeline Items */}
-            {layout === "horizontal" ? (
-              <div className="overflow-x-auto">
-                <div className="flex space-x-4 pb-4">
-                  {filteredData.map((item, index) => (
-                    <TimelineItem key={index} item={item} index={index} onOpenModal={setModalItem} />
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col space-y-4">
-                {filteredData.map((item, index) => (
-                  <TimelineItem key={index} item={item} index={index} onOpenModal={setModalItem} />
-                ))}
-              </div>
-            )}
-            {/* Modal for detailed view */}
             {modalItem && <Modal item={modalItem} onClose={() => setModalItem(null)} />}
           </section>
         );
       };
       
       // ======================================
-      // BackToTop Button Component
+      // Comparison Section Component
+      // ======================================
+      const ComparisonSection = () => {
+        const [selectedTab, setSelectedTab] = useState("O1 vs GPT-4o");
+        
+        const renderComparison = () => {
+          if (selectedTab === "O1 vs GPT-4o") {
+            return (
+              <div className="comparison-content">
+                <h3 className="text-2xl font-bold mb-4">O1 vs. GPT-4o</h3>
+                <ul className="list-disc ml-6 space-y-2">
+                  <li><strong>Purpose:</strong> O1 models are engineered for structured, multi‑step reasoning—especially in competitive programming, math, and science—while GPT‑4o is a general‑purpose upgrade focused on speed and broad capabilities.</li>
+                  <li><strong>Design Focus:</strong> O1 emphasizes technical accuracy and specialized reasoning. GPT‑4o iterates on GPT‑4 with improved processing speed and scalability.</li>
+                  <li><strong>Customization:</strong> O1 models allow deep domain‑specific customization. GPT‑4o offers enhanced performance for a wide range of tasks without as much specialization.</li>
+                  <li><strong>Application:</strong> O1 is best for tasks requiring step‑by‑step logic and technical problem solving, whereas GPT‑4o is suited for faster, more general applications.</li>
+                </ul>
+              </div>
+            );
+          } else if (selectedTab === "O3 vs GPT-4") {
+            return (
+              <div className="comparison-content">
+                <h3 className="text-2xl font-bold mb-4">O3 vs. GPT-4</h3>
+                <ul className="list-disc ml-6 space-y-2">
+                  <li><strong>Evolution:</strong> O3 models are successors to O1‑mini, refined further for specialized tasks, while GPT‑4 remains a larger, more general‑purpose model.</li>
+                  <li><strong>Efficiency:</strong> O3 models are optimized for lighter, more efficient performance in niche areas, whereas GPT‑4 is built for broad performance across diverse applications.</li>
+                  <li><strong>Reasoning:</strong> O3 demonstrates enhanced multi‑step reasoning for complex problems compared to the general‑purpose reasoning of GPT‑4.</li>
+                  <li><strong>Integration:</strong> O3 is designed to seamlessly integrate with domain‑specific tools, while GPT‑4 offers versatility for a wide range of tasks.</li>
+                </ul>
+              </div>
+            );
+          }
+        };
+        
+        return (
+          <section id="comparisons" className="container my-8">
+            <h2 className="text-center text-4xl font-bold mb-6">Model Comparisons</h2>
+            <div className="tabs flex justify-center space-x-4">
+              <button
+                className={selectedTab === "O1 vs GPT-4o" ? "active" : ""}
+                onClick={() => setSelectedTab("O1 vs GPT-4o")}
+              >
+                O1 vs GPT-4o
+              </button>
+              <button
+                className={selectedTab === "O3 vs GPT-4" ? "active" : ""}
+                onClick={() => setSelectedTab("O3 vs GPT-4")}
+              >
+                O3 vs GPT-4
+              </button>
+            </div>
+            <div className="mt-6">
+              {renderComparison()}
+            </div>
+          </section>
+        );
+      };
+      
+      // ======================================
+      // Back-to-Top Button Component
       // ======================================
       const BackToTop = () => {
         const [visible, setVisible] = useState(false);
         useEffect(() => {
-          const onScroll = () => setVisible(window.scrollY > 300);
-          window.addEventListener("scroll", onScroll);
-          return () => window.removeEventListener("scroll", onScroll);
+          const handleScroll = () => setVisible(window.scrollY > 300);
+          window.addEventListener("scroll", handleScroll);
+          return () => window.removeEventListener("scroll", handleScroll);
         }, []);
         return (
           visible && (
-            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="fixed bottom-8 right-8 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none" aria-label="Back to Top">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="back-to-top" aria-label="Back to Top">
               ↑
             </button>
           )
@@ -465,217 +422,16 @@
             <NavBar />
             <Overview />
             <Timeline />
+            <ComparisonSection />
             <BackToTop />
             <Footer />
           </div>
         );
       };
       
-      // Render the App component into the root element.
+      // Render the App component into the #root element.
       ReactDOM.render(<App />, document.getElementById("root"));
-      
-      // ================================================================
-      // Additional dummy components and content to expand the codebase.
-      // (The following sections simulate additional interactive features,
-      // extra informational sections, and extra commentary for educational purposes.)
-      // ================================================================
-      
-      // Example: Interactive Chart Component (dummy placeholder)
-      const InteractiveChart = () => {
-        // Simulated chart data and interactivity.
-        const [chartData, setChartData] = useState([
-          { label: "GPT", value: 10 },
-          { label: "GPT-2", value: 20 },
-          { label: "GPT-3", value: 40 },
-          { label: "ChatGPT", value: 50 },
-          { label: "GPT-4", value: 60 },
-          { label: "GPT-4o", value: 65 }
-        ]);
-        
-        // Dummy function to simulate data update.
-        const updateData = () => {
-          setChartData(chartData.map(item => ({ ...item, value: item.value + Math.floor(Math.random() * 5) })));
-        };
-        
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-3xl font-bold text-blue-900 text-center mb-4">Evolution Chart</h2>
-            <div className="flex justify-center mb-4">
-              <button onClick={updateData} className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none">
-                Update Chart Data
-              </button>
-            </div>
-            <div className="flex space-x-4 justify-center">
-              {chartData.map((data, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <div style={{ height: data.value * 2 + "px", width: "30px" }} className="bg-purple-500 rounded-t"></div>
-                  <span className="text-sm mt-1">{data.label}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        );
-      };
-      
-      // Render the InteractiveChart component after a delay to simulate lazy loading.
-      setTimeout(() => {
-        const chartContainer = document.createElement("div");
-        chartContainer.id = "chart-container";
-        document.body.appendChild(chartContainer);
-        ReactDOM.render(<InteractiveChart />, document.getElementById("chart-container"));
-      }, 3000);
-      
-      // Extra informational section for educational purposes.
-      const EducationalSection = () => {
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-3xl font-bold text-blue-900 text-center mb-4">In-Depth Analysis</h2>
-            <p className="mb-4">
-              Over the years, AI models have evolved from simple text generators to complex systems capable of multi-step reasoning, contextual understanding, and multimodal processing. This timeline not only illustrates the chronological progress but also emphasizes how each generation builds on the innovations of its predecessors.
-            </p>
-            <p className="mb-4">
-              For example, GPT-3’s leap in parameters enabled custom fine-tuning, which later paved the way for tailored applications known as Custom GPTs. These advancements are key for both academic research and real-world applications.
-            </p>
-            <p>
-              Explore the detailed evolution below and consider how each advancement might influence future AI research and development.
-            </p>
-          </section>
-        );
-      };
-      
-      // Render the EducationalSection component after a delay.
-      setTimeout(() => {
-        const eduContainer = document.createElement("div");
-        eduContainer.id = "edu-container";
-        document.body.appendChild(eduContainer);
-        ReactDOM.render(<EducationalSection />, document.getElementById("edu-container"));
-      }, 5000);
-      
-      // ================================================================
-      // Additional dummy comments to increase code length and complexity.
-      // ================================================================
-      
-      // Dummy component for user feedback (for demonstration only)
-      const FeedbackSection = () => {
-        const [feedback, setFeedback] = useState("");
-        const [submittedFeedback, setSubmittedFeedback] = useState([]);
-        
-        const handleSubmitFeedback = (e) => {
-          e.preventDefault();
-          if (feedback.trim() !== "") {
-            setSubmittedFeedback([...submittedFeedback, feedback]);
-            setFeedback("");
-          }
-        };
-        
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-3xl font-bold text-blue-900 text-center mb-4">User Feedback</h2>
-            <form onSubmit={handleSubmitFeedback} className="mb-4">
-              <textarea
-                value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
-                placeholder="Leave your feedback..."
-                className="w-full p-2 border border-blue-600 rounded"
-                rows="4"
-              ></textarea>
-              <button type="submit" className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Submit Feedback
-              </button>
-            </form>
-            <div className="border-t border-blue-600 pt-4">
-              {submittedFeedback.length === 0 ? (
-                <p>No feedback yet.</p>
-              ) : (
-                submittedFeedback.map((fb, index) => (
-                  <div key={index} className="mb-2 p-2 border border-blue-300 rounded">
-                    {fb}
-                  </div>
-                ))
-              )}
-            </div>
-          </section>
-        );
-      };
-      
-      // Render the FeedbackSection component after a delay.
-      setTimeout(() => {
-        const feedbackContainer = document.createElement("div");
-        feedbackContainer.id = "feedback-container";
-        document.body.appendChild(feedbackContainer);
-        ReactDOM.render(<FeedbackSection />, document.getElementById("feedback-container"));
-      }, 7000);
-      
-      // Additional spacing and dummy content to expand the code base.
-      // (Below are many commented-out lines to simulate complexity and reach a higher line count.)
-      
-      /*
-      =========================================================================
-      // BEGIN EXTRA DUMMY CONTENT FOR CODE EXPANSION
-      =========================================================================
-      
-      // Dummy component 1
-      const DummyComponent1 = () => {
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-2xl font-bold text-blue-900 mb-4">Dummy Component 1</h2>
-            <p>This is a dummy component added to increase the codebase size and complexity. It simulates additional interactive content.</p>
-            <ul className="list-disc ml-6">
-              <li>Interactive element A</li>
-              <li>Interactive element B</li>
-              <li>Interactive element C</li>
-            </ul>
-          </section>
-        );
-      };
-      
-      // Dummy component 2
-      const DummyComponent2 = () => {
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-2xl font-bold text-blue-900 mb-4">Dummy Component 2</h2>
-            <p>This component is another placeholder for additional content. It could include graphs, charts, or further analysis.</p>
-            <div className="p-4 border border-blue-600 rounded">
-              <p>Data point 1: Value</p>
-              <p>Data point 2: Value</p>
-              <p>Data point 3: Value</p>
-            </div>
-          </section>
-        );
-      };
-      
-      // Dummy component 3
-      const DummyComponent3 = () => {
-        return (
-          <section className="container mx-auto p-8">
-            <h2 className="text-2xl font-bold text-blue-900 mb-4">Dummy Component 3</h2>
-            <p>More dummy content to showcase the potential for interactive educational material. This section might include interactive quizzes or additional resources.</p>
-            <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Click Me</button>
-          </section>
-        );
-      };
-      
-      // Render dummy components
-      setTimeout(() => {
-        const dummyContainer = document.createElement("div");
-        dummyContainer.id = "dummy-container";
-        document.body.appendChild(dummyContainer);
-        ReactDOM.render(
-          <div>
-            <DummyComponent1 />
-            <DummyComponent2 />
-            <DummyComponent3 />
-          </div>,
-          document.getElementById("dummy-container")
-        );
-      }, 9000);
-      
-      // END EXTRA DUMMY CONTENT
-      =========================================================================
-      */
-      
-      // End of additional dummy content
-      
     </script>
   </body>
 </html>
+
