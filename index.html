@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Models Timeline & Comparisons</title>
+    <title>AI Models Timeline & Model Comparisons</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -16,7 +16,7 @@
         color: #002D62; /* Penn State Blue */
       }
       .container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
       }
@@ -37,63 +37,52 @@
         margin-left: 20px;
         text-decoration: none;
       }
-      /* Timeline Styles */
-      .timeline {
-        position: relative;
+      /* Horizontal Timeline Styles */
+      .timeline-horizontal {
+        display: flex;
+        overflow-x: auto;
         padding: 20px 0;
         margin: 40px 0;
-      }
-      .timeline::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
-        width: 4px;
-        height: 100%;
-        background-color: #002D62;
-      }
-      .timeline-item {
         position: relative;
-        width: 50%;
-        padding: 20px 40px;
-        box-sizing: border-box;
       }
-      .timeline-item:nth-child(odd) {
-        left: 0;
-        text-align: right;
+      .timeline-horizontal::-webkit-scrollbar {
+        height: 8px;
       }
-      .timeline-item:nth-child(even) {
-        left: 50%;
-        text-align: left;
+      .timeline-horizontal::-webkit-scrollbar-thumb {
+        background-color: #002D62;
+        border-radius: 4px;
       }
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        top: 20px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #FFB81C; /* Penn State Gold */
-        border: 4px solid #002D62;
-        z-index: 1;
+      .timeline-horizontal-item {
+        min-width: 300px;
+        margin: 0 20px;
+        background-color: #f7f7f7;
+        border: 2px solid #002D62;
+        border-radius: 8px;
+        padding: 20px;
+        position: relative;
       }
-      .timeline-item:nth-child(odd)::before {
-        right: -10px;
-      }
-      .timeline-item:nth-child(even)::before {
-        left: -10px;
-      }
-      .timeline-item .date {
+      .timeline-horizontal-item .date {
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
-      .timeline-item .title {
+      .timeline-horizontal-item .title {
         font-size: 1.2em;
         margin-bottom: 10px;
       }
-      .timeline-item .description {
+      .timeline-horizontal-item .description {
         font-size: 0.95em;
+      }
+      /* Dot marker on each timeline item */
+      .timeline-horizontal-item::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: -15px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #FFB81C;
+        border: 4px solid #002D62;
       }
       /* Modal Styles */
       .modal-backdrop {
@@ -103,7 +92,8 @@
         background-color: #fff;
         border-radius: 5px;
         padding: 20px;
-        max-width: 600px;
+        max-width: 700px;
+        width: 90%;
         margin: 0 20px;
       }
       /* Tabs for Modal Further Reading */
@@ -146,17 +136,12 @@
       }
       /* Responsive Adjustments */
       @media (max-width: 768px) {
-        .timeline::before {
-          left: 20px;
+        .timeline-horizontal {
+          flex-direction: column;
+          align-items: center;
         }
-        .timeline-item {
-          width: 100%;
-          padding-left: 60px;
-          padding-right: 20px;
-          text-align: left;
-        }
-        .timeline-item::before {
-          left: 20px;
+        .timeline-horizontal-item {
+          margin: 10px 0;
         }
       }
     </style>
@@ -164,10 +149,12 @@
   <body>
     <!-- Root element for React -->
     <div id="root"></div>
+    
     <!-- Load React, ReactDOM, Babel -->
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <!-- React Code -->
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
@@ -194,18 +181,22 @@
       // ======================================
       const Overview = () => (
         <section id="overview" className="container my-8">
-          <h2 className="text-3xl font-bold text-center mb-6">Understanding GPTs & Custom GPTs</h2>
+          <h2 className="text-3xl font-bold text-center mb-6">
+            Understanding GPTs, Bard, & Custom Models
+          </h2>
           <div className="flex flex-col md:flex-row items-center">
             <div className="mr-8 mb-4 md:mb-0">
-              {/* Simple icon representation */}
               <span style={{fontSize: "4rem"}}>🤖</span>
             </div>
             <div className="text-lg">
               <p className="mb-4">
-                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models that leverage transformer architecture to generate human-like text. They are pre-trained on massive datasets and fine-tuned for specific tasks.
+                <strong>GPTs</strong> are deep learning models that use transformer architecture to generate human-like text. They have evolved through various iterations—from GPT to GPT-4 and beyond.
               </p>
               <p className="mb-4">
-                <strong>Custom GPTs</strong> build on these models by tailoring their behavior to meet specialized needs, bridging the gap between general-purpose AI and domain-specific expertise.
+                <strong>Bard</strong> is Google's conversational AI that leverages vast datasets and language understanding to interact naturally.
+              </p>
+              <p className="mb-4">
+                <strong>Custom Models</strong> (including Anthropic's Claude, Google's Gemini, etc.) build on these foundations, tailoring capabilities for specialized domains.
               </p>
               <p>
                 Learn more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Custom GPTs</a>.
@@ -216,7 +207,7 @@
       );
       
       // ======================================
-      // Timeline Data (Extended)
+      // Timeline Data (Extended with non-OpenAI models)
       // ======================================
       const timelineData = [
         {
@@ -225,7 +216,7 @@
           description: "Pioneering AI research is born.",
           details: "OpenAI was founded with a $1B pledge to advance AI for all of humanity.",
           purpose: "To democratize access to advanced AI research and set ethical standards.",
-          futureImplications: "Establishes the groundwork for responsible, widely beneficial AI development.",
+          futureImplications: "Lays the groundwork for responsible, widely beneficial AI development.",
           blogLinks: [
             { text: "OpenAI Blog", url: "https://openai.com/blog/" }
           ],
@@ -235,9 +226,9 @@
           date: "April 2016",
           title: "OpenAI Gym Launched",
           description: "An open-source toolkit for reinforcement learning.",
-          details: "Gym standardizes RL experiments and evaluation methods for researchers.",
+          details: "Gym standardizes RL experiments and evaluation methods.",
           purpose: "To accelerate research by providing reproducible benchmarks.",
-          futureImplications: "Enables rapid iteration of RL algorithms for real-world applications.",
+          futureImplications: "Enables rapid iteration of RL algorithms for practical applications.",
           blogLinks: [
             { text: "Gym GitHub", url: "https://github.com/openai/gym" }
           ],
@@ -247,7 +238,7 @@
           date: "June 2018",
           title: "GPT Released",
           description: "The dawn of transformer-based language models.",
-          details: "GPT showcased the power of unsupervised pre-training on large text corpora.",
+          details: "GPT showcased the power of unsupervised pre-training on massive text corpora.",
           purpose: "To push the boundaries of natural language understanding and generation.",
           futureImplications: "Laid the foundation for specialized, domain-specific adaptations.",
           blogLinks: [
@@ -284,7 +275,7 @@
           title: "ChatGPT Launched",
           description: "Conversational AI enters the mainstream.",
           details: "ChatGPT demonstrated human-like dialogue using GPT-3.5, reaching millions.",
-          purpose: "To make advanced AI interactive and accessible to everyday users.",
+          purpose: "To make advanced AI interactive and accessible.",
           futureImplications: "Inspired a wave of specialized conversational agents.",
           blogLinks: [
             { text: "ChatGPT", url: "https://chat.openai.com" }
@@ -297,7 +288,7 @@
           description: "Multimodal capabilities redefine AI performance.",
           details: "GPT-4 processes both text and images, enhancing reasoning and creativity.",
           purpose: "To bridge multiple modalities for richer, context-aware outputs.",
-          futureImplications: "Sets the stage for complex creative and technical applications.",
+          futureImplications: "Sets the stage for advanced creative and technical applications.",
           blogLinks: [
             { text: "GPT-4 Announcement", url: "https://openai.com/research/gpt-4" }
           ],
@@ -319,7 +310,7 @@
           date: "September 2024",
           title: "o1-preview & o1-mini Released",
           description: "Structured reasoning models for technical tasks.",
-          details: "O1 models emphasize step-by-step logic for competitive programming and scientific research.",
+          details: "O1 models emphasize step-by-step logic for competitive programming and research.",
           purpose: "To enable complex, multi-step reasoning with precision.",
           futureImplications: "Ideal for niche applications requiring rigorous logical processing.",
           blogLinks: [
@@ -332,7 +323,7 @@
           title: "Full Release of o1",
           description: "Complete O1 model enhances technical problem-solving.",
           details: "O1's full release offers substantial improvements in math, programming, and research.",
-          purpose: "To provide specialized tools for technical fields.",
+          purpose: "To empower technical fields with specialized reasoning tools.",
           futureImplications: "Opens new avenues for academic and industrial research requiring precise logic.",
           blogLinks: [
             { text: "O1 Full Release", url: "https://openai.com/blog/o1-full-release/" }
@@ -344,7 +335,7 @@
           title: "o3-mini & o3-mini-high Launched",
           description: "Lightweight models for advanced reasoning.",
           details: "O3 models build on O1-mini innovations, optimized for efficiency and targeted performance.",
-          purpose: "To provide scalable, domain-specific models that are fast and accurate.",
+          purpose: "To provide scalable, domain-specific models that are both fast and accurate.",
           futureImplications: "Perfect for mobile and edge applications in specialized industries.",
           blogLinks: [
             { text: "O3-mini Overview", url: "https://openai.com/blog/o3-mini/" }
@@ -354,9 +345,9 @@
         {
           date: "February 2025",
           title: "'Deep Research' Released",
-          description: "Combining advanced reasoning with web search for reports.",
-          details: "Deep Research synthesizes online data to generate comprehensive, autonomous reports.",
-          purpose: "To streamline the research process through automated data analysis.",
+          description: "Combining advanced reasoning with web search for comprehensive reports.",
+          details: "Deep Research synthesizes online data to generate autonomous, in-depth reports.",
+          purpose: "To streamline the research process with automated data analysis.",
           futureImplications: "Could transform academic research and industry analytics.",
           blogLinks: [
             { text: "Deep Research Tool", url: "https://openai.com/blog/deep-research/" }
@@ -364,32 +355,46 @@
           Icon: "Search"
         },
         {
-          date: "2024",
-          title: "Claude 3 Series",
-          description: "Enhanced reasoning and safety in AI from Anthropic.",
-          details: "Claude 3 focuses on secure, reliable AI with improved truthfulness.",
-          purpose: "To ensure robust and ethical AI development.",
-          futureImplications: "Sets standards for ethical AI that influence future regulation.",
+          date: "2023",
+          title: "Bard Launched",
+          description: "Google’s conversational AI, Bard, is introduced.",
+          details: "Bard leverages Google's vast data and language models to engage users in natural dialogue.",
+          purpose: "To offer an alternative conversational AI experience powered by real-time data.",
+          futureImplications: "Forges a path for deeper integration with Google's ecosystem and search technologies.",
           blogLinks: [
-            { text: "Claude 3 Overview", url: "https://www.anthropic.com/claude" }
+            { text: "Bard Announcement", url: "https://blog.google/technology/ai/introducing-bard/" }
           ],
-          Icon: "Shield"
+          Icon: "Users"
         },
         {
           date: "2023-2024",
           title: "Google's Gemini Series",
-          description: "A multimodal model integrated into Bard.",
-          details: "Gemini is designed for collaboration and diverse task handling.",
-          purpose: "To combine multiple modalities for comprehensive AI solutions.",
-          futureImplications: "Marks Google's commitment to advanced, integrated AI research.",
+          description: "A multimodal model integrated into Bard and other services.",
+          details: "Gemini is designed for collaboration and processing multiple modalities.",
+          purpose: "To merge text, images, and more for comprehensive AI solutions.",
+          futureImplications: "Marks Google's next step in advanced AI research and integration.",
           blogLinks: [
             { text: "Google Gemini", url: "https://blog.google/technology/ai/announcing-gemini/" }
           ],
           Icon: "Users"
+        },
+        {
+          date: "2024",
+          title: "Claude 3 Series",
+          description: "Anthropic releases Claude 3 with enhanced reasoning and safety.",
+          details: "Claude 3 focuses on secure, reliable AI with improved truthfulness and safeguards.",
+          purpose: "To ensure robust and ethical AI development.",
+          futureImplications: "Influences industry standards and regulatory frameworks for safe AI.",
+          blogLinks: [
+            { text: "Claude 3 Overview", url: "https://www.anthropic.com/claude" }
+          ],
+          Icon: "Shield"
         }
       ];
       
-      // Map Icon names to actual lucide-react components.
+      // ======================================
+      // Map Icon Names to Actual lucide-react Components
+      // ======================================
       const iconMapping = {
         "Rocket": lucideReact.Rocket,
         "Dumbbell": lucideReact.Dumbbell,
@@ -421,76 +426,34 @@
       });
       
       // ======================================
-      // Timeline Item Component
+      // Horizontal Timeline Item Component
       // ======================================
-      const TimelineItem = ({ item, index, onOpenModal }) => {
-        const isLeft = index % 2 === 0;
-        const itemStyle = {
-          position: "relative",
-          width: "50%",
-          padding: "20px 40px",
-          boxSizing: "border-box",
-          textAlign: isLeft ? "right" : "left",
-          left: isLeft ? "0" : "50%"
-        };
-        const dotStyle = {
-          position: "absolute",
-          top: "20px",
-          width: "20px",
-          height: "20px",
-          borderRadius: "50%",
-          background: "#FFB81C",
-          border: "4px solid #002D62",
-          zIndex: 1,
-          right: isLeft ? "-10px" : "auto",
-          left: isLeft ? "auto" : "-10px"
-        };
-        
-        // Interactive features: likes and comments.
-        const [likes, setLikes] = useState(0);
-        const [comments, setComments] = useState([]);
-        const [commentInput, setCommentInput] = useState("");
-        
-        const handleLike = () => setLikes(likes + 1);
-        const handleCommentSubmit = (e) => {
-          e.preventDefault();
-          if (commentInput.trim() !== "") {
-            setComments([...comments, commentInput]);
-            setCommentInput("");
-          }
-        };
-        
+      const HorizontalTimelineItem = ({ item, onOpenModal }) => (
+        <div className="timeline-horizontal-item bg-gray-50 border-2 border-blue-600 rounded p-4 mr-4 min-w-[280px] relative">
+          <div className="date font-bold mb-1">{item.date}</div>
+          <div className="title text-xl mb-2">{item.title}</div>
+          <div className="description text-sm mb-2">{item.description}</div>
+          <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
+            Learn More
+          </button>
+        </div>
+      );
+      
+      // ======================================
+      // Horizontal Timeline Component
+      // ======================================
+      const HorizontalTimeline = () => {
+        const [modalItem, setModalItem] = useState(null);
         return (
-          <div style={itemStyle} className="timeline-item">
-            <div className="date" style={{ fontWeight: "bold", marginBottom: "10px" }}>{item.date}</div>
-            <div className="title" style={{ fontSize: "1.2em", marginBottom: "10px" }}>{item.title}</div>
-            <div className="description" style={{ fontSize: "0.95em" }}>{item.description}</div>
-            <div style={dotStyle}></div>
-            <div className="mt-4 flex justify-center space-x-4">
-              <button onClick={handleLike} className="like-button">
-                <span>&hearts; {likes}</span>
-              </button>
-              <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
-                Learn More
-              </button>
+          <section id="timeline" className="container my-8">
+            <h1 className="text-center text-4xl font-bold mb-6">AI Models Timeline (Horizontal)</h1>
+            <div className="timeline-horizontal flex overflow-x-auto">
+              {enrichedTimeline.map((item, index) => (
+                <HorizontalTimelineItem key={index} item={item} onOpenModal={setModalItem} />
+              ))}
             </div>
-            <div className="mt-4">
-              <h3 className="font-bold">Comments</h3>
-              <form onSubmit={handleCommentSubmit}>
-                <input
-                  type="text"
-                  value={commentInput}
-                  onChange={(e) => setCommentInput(e.target.value)}
-                  placeholder="Add a comment..."
-                  className="w-full p-2 border border-blue-600 rounded"
-                />
-                <button type="submit" className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
-              </form>
-              <div className="comment-box mt-2">
-                {comments.length === 0 ? <p>No comments yet.</p> : comments.map((c, i) => <div key={i} className="comment">{c}</div>)}
-              </div>
-            </div>
-          </div>
+            {modalItem && <TimelineModal item={modalItem} onClose={() => setModalItem(null)} />}
+          </section>
         );
       };
       
@@ -499,7 +462,6 @@
       // ======================================
       const TimelineModal = ({ item, onClose }) => {
         const [activeTab, setActiveTab] = useState("Details");
-        
         const renderTabContent = () => {
           if (activeTab === "Details") {
             return <p>{item.details}</p>;
@@ -525,7 +487,6 @@
             );
           }
         };
-        
         return (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
@@ -559,59 +520,39 @@
       };
       
       // ======================================
-      // Timeline Component
-      // ======================================
-      const Timeline = () => {
-        const [modalItem, setModalItem] = useState(null);
-        return (
-          <section id="timeline" className="container my-8">
-            <h1 className="text-center text-4xl font-bold mb-6">AI Models Timeline</h1>
-            <div className="timeline">
-              {enrichedTimeline.map((item, index) => (
-                <TimelineItem key={index} item={item} index={index} onOpenModal={setModalItem} />
-              ))}
-            </div>
-            {modalItem && <TimelineModal item={modalItem} onClose={() => setModalItem(null)} />}
-          </section>
-        );
-      };
-      
-      // ======================================
       // Comparison Section Component
       // ======================================
       const ComparisonSection = () => {
         const [activeTab, setActiveTab] = useState("O1 vs GPT-4o");
-        
         const renderComparison = () => {
           if (activeTab === "O1 vs GPT-4o") {
             return (
-              <div className="comparison-content">
+              <div className="comparison-content border-2 border-blue-600 rounded p-4">
                 <h3 className="text-2xl font-bold mb-4">O1 vs. GPT-4o</h3>
-                <ul className="list-disc ml-6 space-y-2">
-                  <li><strong>Purpose:</strong> O1 models are engineered for structured, multi‑step reasoning essential for technical tasks, while GPT‑4o is a general‑purpose upgrade focused on speed and broad capabilities.</li>
-                  <li><strong>Design Focus:</strong> O1 emphasizes technical accuracy and specialized reasoning; GPT‑4o iterates on GPT‑4 with improved processing speed and efficiency.</li>
-                  <li><strong>Customization:</strong> O1 allows deep domain‑specific customization, whereas GPT‑4o serves a wide range of general tasks.</li>
-                  <li><strong>Application:</strong> O1 is ideal for competitive programming, mathematics, and scientific research, while GPT‑4o is suited for scalable real‑time applications.</li>
-                  <li><strong>Deep Research:</strong> The evolution from O1 to GPT‑4o reflects a move toward integrated research tools that merge AI reasoning with data synthesis.</li>
+                <ul className="list-disc ml-6 space-y-2 text-sm">
+                  <li><strong>Purpose:</strong> O1 models are engineered for structured, multi-step reasoning essential for technical tasks, while GPT-4o is designed as a general-purpose upgrade focused on speed and broad capabilities.</li>
+                  <li><strong>Design Focus:</strong> O1 emphasizes technical accuracy and specialized reasoning; GPT-4o builds on GPT-4 with improved speed and efficiency.</li>
+                  <li><strong>Customization:</strong> O1 enables deep domain-specific customization, whereas GPT-4o serves a wide range of general tasks.</li>
+                  <li><strong>Application:</strong> O1 is ideal for competitive programming, mathematics, and research, while GPT-4o targets scalable, real-time applications.</li>
+                  <li><strong>Deep Research:</strong> The progression from O1 to GPT-4o reflects an industry move toward integrating AI reasoning with data synthesis for research.</li>
                 </ul>
               </div>
             );
           } else if (activeTab === "O3 vs GPT-4") {
             return (
-              <div className="comparison-content">
+              <div className="comparison-content border-2 border-blue-600 rounded p-4">
                 <h3 className="text-2xl font-bold mb-4">O3 vs. GPT-4</h3>
-                <ul className="list-disc ml-6 space-y-2">
-                  <li><strong>Evolution:</strong> O3 models are successors to O1-mini, refined further for specialized tasks, while GPT‑4 is a larger, general‑purpose model.</li>
-                  <li><strong>Efficiency:</strong> O3 models are optimized for niche applications with lighter, faster performance; GPT‑4 offers robust, broad performance.</li>
-                  <li><strong>Reasoning:</strong> O3 demonstrates enhanced multi‑step reasoning for complex problems, while GPT‑4 provides a more versatile context understanding.</li>
-                  <li><strong>Integration:</strong> O3 is designed for seamless integration with domain‑specific tools, whereas GPT‑4 is adaptable to a wide range of uses.</li>
-                  <li><strong>Future Directions:</strong> O3’s development hints at a future where specialized, efficient models complement general‑purpose AI like GPT‑4.</li>
+                <ul className="list-disc ml-6 space-y-2 text-sm">
+                  <li><strong>Evolution:</strong> O3 models, refined successors to O1-mini, are designed for specialized tasks, while GPT-4 remains a large, general-purpose model.</li>
+                  <li><strong>Efficiency:</strong> O3 is optimized for niche applications with lighter, faster performance; GPT-4 offers robust, broad performance.</li>
+                  <li><strong>Reasoning:</strong> O3 demonstrates enhanced multi-step reasoning for complex problems, whereas GPT-4 provides versatile contextual understanding.</li>
+                  <li><strong>Integration:</strong> O3 is built to seamlessly integrate with domain-specific tools, while GPT-4 adapts to a wide range of uses.</li>
+                  <li><strong>Future Directions:</strong> O3 hints at a future where specialized, efficient models complement the broader capabilities of general-purpose AI like GPT-4.</li>
                 </ul>
               </div>
             );
           }
         };
-        
         return (
           <section id="comparisons" className="container my-8">
             <h2 className="text-center text-4xl font-bold mb-6">Model Comparisons</h2>
@@ -641,10 +582,10 @@
         <section id="deepresearch" className="container my-8">
           <h2 className="text-center text-4xl font-bold mb-6">Deep Research & Future Directions</h2>
           <p className="text-lg leading-relaxed mb-4">
-            The evolution of AI models—from GPT to the specialized O-series—reflects not only technical improvements but also a shift toward models that serve specific, purposeful roles. Deep Research initiatives combine these advanced reasoning capabilities with real-time data synthesis, transforming the way we conduct academic research and industry analysis.
+            The evolution of AI models—from early GPT iterations to the specialized O-series, Bard, Gemini, and Claude—illustrates a shift towards models with specific purposes and research-driven integration. Deep Research initiatives combine these advanced reasoning capabilities with real-time data synthesis to transform academic and industrial analysis.
           </p>
           <p className="text-lg leading-relaxed mb-4">
-            As we move forward, models like GPT-4o and the O-series will integrate further with research workflows, enabling autonomous data collection and in-depth analysis that can inform decision-making in science, business, and beyond.
+            As we progress, models like GPT-4o and the O-series will further integrate into research workflows, enabling autonomous data collection, analysis, and informed decision-making.
           </p>
           <div className="mt-6 text-center">
             <a href="https://openai.com/blog/deep-research/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -660,9 +601,9 @@
       const BackToTop = () => {
         const [visible, setVisible] = useState(false);
         useEffect(() => {
-          const onScroll = () => setVisible(window.scrollY > 300);
-          window.addEventListener("scroll", onScroll);
-          return () => window.removeEventListener("scroll", onScroll);
+          const handleScroll = () => setVisible(window.scrollY > 300);
+          window.addEventListener("scroll", handleScroll);
+          return () => window.removeEventListener("scroll", handleScroll);
         }, []);
         return (
           visible && (
@@ -688,21 +629,21 @@
       // ======================================
       // Main App Component
       // ======================================
-      const App = () => {
-        return (
-          <div className="w-full">
-            <NavBar />
-            <Overview />
-            <Timeline />
-            <ComparisonSection />
-            <DeepResearchSection />
-            <BackToTop />
-            <Footer />
-          </div>
-        );
-      };
+      const App = () => (
+        <div className="w-full">
+          <NavBar />
+          <Overview />
+          <HorizontalTimeline />
+          <ComparisonSection />
+          <DeepResearchSection />
+          <BackToTop />
+          <Footer />
+        </div>
+      );
       
-      // Render the App into the root element.
+      // ======================================
+      // Render the App Component
+      // ======================================
       ReactDOM.render(<App />, document.getElementById("root"));
     </script>
   </body>
