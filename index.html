@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Models Timeline - Chronological Evolution</title>
+    <title>AI Models Timeline - Evolution of AI</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- React and ReactDOM from CDN -->
@@ -14,7 +14,7 @@
     <!-- lucide-react UMD build -->
     <script src="https://unpkg.com/lucide-react/dist/index.umd.js"></script>
     <style>
-      /* Fade-in animation */
+      /* Fade-in animation for timeline items */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -24,11 +24,11 @@
       }
       /* Modal backdrop style */
       .modal-backdrop {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.4);
       }
     </style>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-white text-black">
     <div id="root"></div>
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
@@ -53,122 +53,123 @@
         XCircle
       } = lucideReact;
 
-      // Helper function: Convert date string to Date object for sorting.
+      // Helper function: Convert date strings into Date objects for sorting.
       const getDateValue = (dateStr) => {
+        // For a range like "2023-2024", use the first year.
         if (dateStr.includes('-')) {
           return new Date(dateStr.split('-')[0]);
         }
         return new Date(dateStr);
       };
 
-      // Timeline data in chronological order (earliest first).
+      // Timeline data in chronological order (earliest events first).
       const timelineData = [
         {
           date: "December 2015",
           title: "OpenAI Founded",
-          description: "OpenAI is founded by tech leaders setting a new direction in AI research.",
-          details: "Established with $1 billion in funding, OpenAI played a pivotal role in advancing AI.",
+          description: "OpenAI is founded to drive breakthrough AI research.",
+          details: "With a pledge of $1B, OpenAI was established to advance AI for all, setting the stage for transformative innovation.",
           Icon: Rocket
         },
         {
           date: "April 2016",
           title: "OpenAI Gym Launched",
-          description: "Launch of OpenAI Gym, an open-source toolkit for reinforcement learning.",
-          details: "Standardized methods for RL experiments and evaluation.",
+          description: "Launch of OpenAI Gym, a toolkit for reinforcement learning.",
+          details: "Gym standardized RL experiments and has become essential for AI researchers worldwide.",
           Icon: Dumbbell
         },
         {
           date: "June 2018",
           title: "GPT Released",
-          description: "The first GPT model is introduced, sparking a new era in NLP.",
-          details: "Transformer-based language models revolutionize text generation.",
+          description: "The first GPT model is introduced, sparking an NLP revolution.",
+          details: "This model showcased the power of transformer-based architectures, changing the landscape of text generation.",
           Icon: Cpu
         },
         {
           date: "February 2019",
           title: "GPT-2 Launched",
-          description: "GPT-2 demonstrates coherent text generation over long passages.",
-          details: "Improved text quality raised discussions on AI safety.",
+          description: "GPT-2 demonstrates improved text generation and coherence.",
+          details: "Its ability to generate realistic text raised important discussions on AI safety and potential misuse.",
           Icon: Server
         },
         {
           date: "June 2020",
           title: "GPT-3 Released",
-          description: "GPT-3 debuts with 175 billion parameters, revolutionizing NLP.",
-          details: "Paved the way for fine-tuning and custom applications.",
+          description: "GPT-3 debuts with 175B parameters, revolutionizing NLP.",
+          details: "GPT-3's unprecedented scale enabled fine-tuning and custom applications—paving the way for Custom GPTs.",
           Icon: Robot
         },
         {
           date: "November 2022",
           title: "ChatGPT Launched",
-          description: "ChatGPT, based on GPT-3.5, gains recognition for its conversational abilities.",
-          details: "Popularized conversational AI and custom-tailored models for interactive use.",
+          description: "ChatGPT, powered by GPT-3.5, becomes a household name.",
+          details: "Its conversational abilities brought AI to the mainstream and demonstrated the potential for interactive applications.",
           Icon: MessageSquare
         },
         {
           date: "March 2023",
           title: "GPT-4 Introduced",
-          description: "GPT-4 is unveiled with multimodal capabilities, processing text and images.",
-          details: "Enhanced reasoning, creativity, and task completion mark a major evolution.",
+          description: "GPT-4 is unveiled with multimodal capabilities (text & image).",
+          details: "Marking a significant evolution, GPT-4 offers enhanced reasoning, creativity, and technical performance.",
           Icon: Monitor
         },
         {
           date: "May 2024",
           title: "GPT-4o ('Omni') Announced",
-          description: "GPT-4o offers faster processing and broader capabilities than GPT-4.",
-          details: "Expanded performance and speed highlight iterative improvements.",
+          description: "GPT-4o delivers faster processing and broader capabilities.",
+          details: "GPT-4o builds on GPT-4 with iterative improvements in speed and performance, expanding its practical applications.",
           Icon: Zap
         },
         {
           date: "September 2024",
           title: "o1-preview & o1-mini Released",
-          description: "New O1 models 'think' before responding, focusing on structured reasoning.",
-          details: "Advanced reasoning for complex tasks distinguishes these models from GPT-4 series.",
+          description: "New O1 models are released with a focus on structured reasoning.",
+          details: "These models are designed to handle complex problem solving and demonstrate advanced reasoning capabilities distinct from GPT-4.",
           Icon: BookOpen
         },
         {
           date: "December 2024",
           title: "Full Release of o1",
-          description: "The complete O1 model is released, enhancing technical problem-solving.",
-          details: "Marked improvements in competitive programming, mathematics, and scientific reasoning.",
+          description: "The complete O1 model is launched, enhancing technical and scientific tasks.",
+          details: "O1’s full release significantly boosts performance in competitive programming, mathematics, and scientific research.",
           Icon: Code
         },
         {
           date: "January 2025",
           title: "o3-mini & o3-mini-high Launched",
-          description: "Successors to O1-mini offering advanced reasoning for specialized tasks.",
-          details: "Optimized for targeted applications and clearly distinct from the GPT-4 family.",
+          description: "O3 series models offer further advanced reasoning for specialized tasks.",
+          details: "Optimized for targeted applications, the O3 series clearly distinguishes itself from the GPT-4 family.",
           Icon: Database
         },
         {
           date: "February 2025",
           title: "'Deep Research' Released",
-          description: "A service combining advanced reasoning and web search for comprehensive reports.",
-          details: "A leap toward autonomous, AI-driven research and data analysis.",
+          description: "A service combining advanced reasoning with web search for detailed reports.",
+          details: "Deep Research is a step toward autonomous, AI-driven research, capable of comprehensive data analysis.",
           Icon: Search
         },
         {
           date: "2023-2024",
           title: "Google's Gemini Series",
-          description: "Google unveils Gemini, a multimodal model integrated into Bard and other services.",
-          details: "Designed for collaboration and diverse tasks, representing Google's foray into advanced AI.",
+          description: "Google unveils Gemini, a multimodal AI integrated into Bard.",
+          details: "Gemini represents Google's advancement in AI, emphasizing collaboration and diverse task handling.",
           Icon: Users
         },
         {
           date: "2024",
           title: "Claude 3 Series",
-          description: "Anthropic releases Claude 3 with enhanced reasoning and safety features.",
-          details: "Focuses on secure, reliable AI with improved truthfulness and reasoning.",
+          description: "Anthropic releases Claude 3 with enhanced safety and reasoning.",
+          details: "Focusing on secure and reliable AI, Claude 3 offers improvements in truthfulness and robust reasoning.",
           Icon: Shield
         }
       ].sort((a, b) => getDateValue(a.date) - getDateValue(b.date));
 
-      // Modal component for showing expanded details.
+      // Modal component for expanded details.
       const Modal = ({ item, onClose }) => (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
+          <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
           <div className="bg-white rounded-lg shadow-xl max-w-lg mx-auto z-50 p-6 animate-fadeIn">
-            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 focus:outline-none" aria-label="Close modal">
+            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 hover:text-blue-800 focus:outline-none" aria-label="Close">
               <XCircle className="w-6 h-6" />
             </button>
             <div className="mb-4 flex justify-center">
@@ -185,7 +186,7 @@
         </div>
       );
 
-      // TimelineItem component
+      // TimelineItem component.
       const TimelineItem = ({ item, index, onOpenModal, layout }) => {
         const ref = useRef(null);
         const isLeft = layout === "vertical" ? true : index % 2 === 0;
@@ -205,16 +206,16 @@
             <div className="flex justify-center mb-4">
               {item.Icon && <item.Icon className="w-16 h-16 text-blue-600" />}
             </div>
-            <div className="font-bold mb-2 text-gray-600">{item.date}</div>
+            <div className="font-bold mb-2 text-blue-800">{item.date}</div>
             <div className="text-xl font-semibold text-blue-900 mb-2">{item.title}</div>
-            <div className="text-sm text-gray-600 mb-4">{item.description}</div>
+            <div className="text-sm text-gray-800 mb-4">{item.description}</div>
             <div className="flex justify-center">
               <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none flex items-center">
                 <ChevronDown className="w-4 h-4 mr-1" />
                 <span>Learn More</span>
               </button>
             </div>
-            <div className={`absolute top-6 w-5 h-5 rounded-full bg-yellow-500 border-4 border-blue-900 z-10 transition-all duration-300 group-hover:scale-125 ${layout === 'vertical' ? "left-2" : (isLeft ? "-right-2.5" : "-left-2.5")}`}></div>
+            <div className={`absolute top-6 w-5 h-5 rounded-full bg-yellow-500 border-4 border-blue-800 z-10 transition-all duration-300 group-hover:scale-125 ${layout === 'vertical' ? "left-2" : (isLeft ? "-right-2.5" : "-left-2.5")}`}></div>
           </div>
         );
       };
@@ -243,7 +244,7 @@
                 aria-label="Search timeline events"
               />
               <button onClick={() => setLayout(layout === "horizontal" ? "vertical" : "horizontal")} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
-                {layout === "horizontal" ? "Vertical Layout" : "Horizontal Layout"}
+                {layout === "horizontal" ? "Switch to Vertical" : "Switch to Horizontal"}
               </button>
             </div>
             {layout === "horizontal" ? (
@@ -274,9 +275,9 @@
             <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
               <Rocket className="w-24 h-24 text-blue-600" />
             </div>
-            <div className="text-gray-700 text-lg">
+            <div className="text-lg">
               <p className="mb-4">
-                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models based on transformer architecture, pre-trained on massive datasets and fine-tuned for specific tasks.
+                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models based on the transformer architecture, pre-trained on massive datasets and fine-tuned for specific tasks.
               </p>
               <p className="mb-4">
                 <strong>Custom GPTs</strong> build upon these models by tailoring their behavior for specialized domains, bridging the gap between general AI and domain-specific expertise.
@@ -289,7 +290,7 @@
         </div>
       );
 
-      // BackToTop button component.
+      // Back to Top button component.
       const BackToTop = () => {
         const [visible, setVisible] = useState(false);
         useEffect(() => {
@@ -309,8 +310,8 @@
       // Main App component.
       const App = () => (
         <div className="w-full">
-          <header className="flex justify-between items-center p-4 bg-blue-100">
-            <h1 className="text-2xl font-bold text-blue-900">AI Models Timeline</h1>
+          <header className="flex justify-between items-center p-4 bg-blue-200">
+            <h1 className="text-3xl font-bold text-blue-900">AI Models Timeline</h1>
           </header>
           <Overview />
           <Timeline />
