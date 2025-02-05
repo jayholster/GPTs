@@ -14,7 +14,7 @@
     <!-- lucide-react UMD build -->
     <script src="https://unpkg.com/lucide-react/dist/index.umd.js"></script>
     <style>
-      /* Fade-in animation for timeline items */
+      /* Fade-in animation */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -53,123 +53,122 @@
         XCircle
       } = lucideReact;
 
-      // Helper function: Convert date strings into Date objects for sorting.
+      // Helper: Convert a date string to a Date object for sorting.
       const getDateValue = (dateStr) => {
-        // For a range like "2023-2024", use the first year.
         if (dateStr.includes('-')) {
           return new Date(dateStr.split('-')[0]);
         }
         return new Date(dateStr);
       };
 
-      // Timeline data in chronological order (earliest events first).
+      // Timeline data (chronologically sorted: earliest first).
       const timelineData = [
         {
           date: "December 2015",
           title: "OpenAI Founded",
           description: "OpenAI is founded to drive breakthrough AI research.",
-          details: "With a pledge of $1B, OpenAI was established to advance AI for all, setting the stage for transformative innovation.",
+          details: "Established with $1B in funding, OpenAI played a pivotal role in advancing AI and setting the stage for transformative innovation.",
           Icon: Rocket
         },
         {
           date: "April 2016",
           title: "OpenAI Gym Launched",
-          description: "Launch of OpenAI Gym, a toolkit for reinforcement learning.",
-          details: "Gym standardized RL experiments and has become essential for AI researchers worldwide.",
+          description: "Launch of OpenAI Gym for reinforcement learning research.",
+          details: "Gym standardized RL experiments and evaluation methods, becoming essential for AI researchers worldwide.",
           Icon: Dumbbell
         },
         {
           date: "June 2018",
           title: "GPT Released",
-          description: "The first GPT model is introduced, sparking an NLP revolution.",
-          details: "This model showcased the power of transformer-based architectures, changing the landscape of text generation.",
+          description: "The first GPT model is introduced, sparking a revolution in NLP.",
+          details: "Transformer-based language models revolutionized text generation, paving the way for future innovations.",
           Icon: Cpu
         },
         {
           date: "February 2019",
           title: "GPT-2 Launched",
-          description: "GPT-2 demonstrates improved text generation and coherence.",
-          details: "Its ability to generate realistic text raised important discussions on AI safety and potential misuse.",
+          description: "GPT-2 demonstrates coherent text generation over long passages.",
+          details: "GPT-2 raised important discussions about AI safety while showcasing remarkable text quality.",
           Icon: Server
         },
         {
           date: "June 2020",
           title: "GPT-3 Released",
-          description: "GPT-3 debuts with 175B parameters, revolutionizing NLP.",
-          details: "GPT-3's unprecedented scale enabled fine-tuning and custom applications—paving the way for Custom GPTs.",
+          description: "GPT-3 debuts with 175B parameters, transforming NLP.",
+          details: "GPT-3’s scale enabled fine-tuning and custom applications, paving the way for Custom GPTs.",
           Icon: Robot
         },
         {
           date: "November 2022",
           title: "ChatGPT Launched",
-          description: "ChatGPT, powered by GPT-3.5, becomes a household name.",
-          details: "Its conversational abilities brought AI to the mainstream and demonstrated the potential for interactive applications.",
+          description: "ChatGPT, powered by GPT-3.5, gains widespread acclaim for its conversational abilities.",
+          details: "ChatGPT brought AI to the mainstream and demonstrated the potential for interactive, user-friendly applications.",
           Icon: MessageSquare
         },
         {
           date: "March 2023",
           title: "GPT-4 Introduced",
-          description: "GPT-4 is unveiled with multimodal capabilities (text & image).",
-          details: "Marking a significant evolution, GPT-4 offers enhanced reasoning, creativity, and technical performance.",
+          description: "GPT-4 is unveiled with multimodal capabilities (text and images).",
+          details: "GPT-4 enhances reasoning, creativity, and technical performance, representing a major evolution.",
           Icon: Monitor
         },
         {
           date: "May 2024",
           title: "GPT-4o ('Omni') Announced",
-          description: "GPT-4o delivers faster processing and broader capabilities.",
-          details: "GPT-4o builds on GPT-4 with iterative improvements in speed and performance, expanding its practical applications.",
+          description: "GPT-4o offers faster processing and broader capabilities than GPT-4.",
+          details: "Iterative improvements in speed and performance make GPT-4o a standout advancement over its predecessor.",
           Icon: Zap
         },
         {
           date: "September 2024",
           title: "o1-preview & o1-mini Released",
-          description: "New O1 models are released with a focus on structured reasoning.",
-          details: "These models are designed to handle complex problem solving and demonstrate advanced reasoning capabilities distinct from GPT-4.",
+          description: "New O1 models focus on structured reasoning.",
+          details: "These models handle complex problem solving with advanced reasoning techniques distinct from the GPT-4 series.",
           Icon: BookOpen
         },
         {
           date: "December 2024",
           title: "Full Release of o1",
-          description: "The complete O1 model is launched, enhancing technical and scientific tasks.",
-          details: "O1’s full release significantly boosts performance in competitive programming, mathematics, and scientific research.",
+          description: "The complete O1 model is released, enhancing technical and scientific tasks.",
+          details: "O1’s release marks significant improvements in competitive programming, mathematics, and research capabilities.",
           Icon: Code
         },
         {
           date: "January 2025",
           title: "o3-mini & o3-mini-high Launched",
-          description: "O3 series models offer further advanced reasoning for specialized tasks.",
-          details: "Optimized for targeted applications, the O3 series clearly distinguishes itself from the GPT-4 family.",
+          description: "The O3 series offers advanced reasoning for specialized tasks.",
+          details: "Optimized for targeted applications, the O3 series is clearly distinct from the GPT-4 family.",
           Icon: Database
         },
         {
           date: "February 2025",
           title: "'Deep Research' Released",
-          description: "A service combining advanced reasoning with web search for detailed reports.",
-          details: "Deep Research is a step toward autonomous, AI-driven research, capable of comprehensive data analysis.",
+          description: "A service that combines advanced reasoning and web search for comprehensive reports.",
+          details: "Deep Research represents a leap toward autonomous, AI-driven research and data analysis.",
           Icon: Search
         },
         {
           date: "2023-2024",
           title: "Google's Gemini Series",
-          description: "Google unveils Gemini, a multimodal AI integrated into Bard.",
-          details: "Gemini represents Google's advancement in AI, emphasizing collaboration and diverse task handling.",
+          description: "Google unveils Gemini, a multimodal model integrated into Bard.",
+          details: "Gemini represents Google's foray into advanced AI, emphasizing collaboration and diverse task handling.",
           Icon: Users
         },
         {
           date: "2024",
           title: "Claude 3 Series",
-          description: "Anthropic releases Claude 3 with enhanced safety and reasoning.",
-          details: "Focusing on secure and reliable AI, Claude 3 offers improvements in truthfulness and robust reasoning.",
+          description: "Anthropic releases Claude 3 with enhanced reasoning and safety.",
+          details: "Claude 3 focuses on secure and reliable AI with improved truthfulness and robust reasoning.",
           Icon: Shield
         }
       ].sort((a, b) => getDateValue(a.date) - getDateValue(b.date));
 
-      // Modal component for expanded details.
+      // Modal component for showing expanded timeline details.
       const Modal = ({ item, onClose }) => (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
           <div className="bg-white rounded-lg shadow-xl max-w-lg mx-auto z-50 p-6 animate-fadeIn">
-            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 hover:text-blue-800 focus:outline-none" aria-label="Close">
+            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 focus:outline-none" aria-label="Close">
               <XCircle className="w-6 h-6" />
             </button>
             <div className="mb-4 flex justify-center">
@@ -186,7 +185,7 @@
         </div>
       );
 
-      // TimelineItem component.
+      // TimelineItem component that displays an individual timeline event.
       const TimelineItem = ({ item, index, onOpenModal, layout }) => {
         const ref = useRef(null);
         const isLeft = layout === "vertical" ? true : index % 2 === 0;
