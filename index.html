@@ -12,10 +12,16 @@
     <!-- Babel for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-      /* Custom fade in animation */
+      /* Custom fade-in animation */
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       .animate-fadeIn {
         animation: fadeIn 0.8s forwards;
@@ -26,8 +32,8 @@
     <div id="root"></div>
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
-      
-      // Inline SVG icon components
+
+      /* Inline SVG Icon Components */
       const ChevronDown = (props) => (
         <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <polyline points="6 9 12 15 18 9" />
@@ -46,12 +52,12 @@
         </svg>
       );
 
-      // Toggle dark mode by toggling a class on the documentElement
+      /* Toggle Dark Mode */
       const toggleDarkMode = () => {
         document.documentElement.classList.toggle('dark');
       };
 
-      // Helper function for sorting dates
+      /* Helper: Convert date strings for sorting */
       const getDateValue = (dateStr) => {
         if (dateStr.includes('-')) {
           return new Date(dateStr.split('-')[0]);
@@ -59,113 +65,156 @@
         return new Date(dateStr);
       };
 
-      // Timeline data with detailed info, links, and relevant updates
+      /* Timeline Data with inline images and links.
+         Note: Some images are loaded from official sources; others use placeholder URLs.
+      */
       const timelineData = [
         {
           date: "December 2015",
           title: "OpenAI Founded",
-          description: "OpenAI is founded by tech leaders including Sam Altman, Greg Brockman, and others, setting a new direction in AI research.",
+          description:
+            "OpenAI is founded by tech leaders including Sam Altman, Greg Brockman, and others, setting a new direction in AI research.",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/1024px-OpenAI_Logo.svg.png",
           links: [{ text: "OpenAI Website", url: "https://openai.com" }],
-          details: "Established as a non-profit AI research company with $1 billion in pledged funding, OpenAI has played a pivotal role in advancing AI."
+          details:
+            "Established as a non-profit AI research company with $1 billion in pledged funding, OpenAI has played a pivotal role in advancing AI."
         },
         {
           date: "April 2016",
           title: "OpenAI Gym Launched",
-          description: "Launch of OpenAI Gym, an open-source toolkit for reinforcement learning research.",
+          description:
+            "Launch of OpenAI Gym, an open-source toolkit for reinforcement learning research.",
+          image: "https://openai.com/content/images/2022/05/openai-avatar.png",
           links: [{ text: "OpenAI Gym GitHub", url: "https://github.com/openai/gym" }],
-          details: "This platform standardized the methodology for reinforcement learning experiments and evaluation."
+          details:
+            "This platform standardized the methodology for reinforcement learning experiments and evaluation."
         },
         {
           date: "June 2018",
           title: "GPT Released",
-          description: "The first Generative Pre-trained Transformer (GPT) model is introduced, laying the groundwork for future breakthroughs.",
+          description:
+            "The first GPT model is introduced, laying the groundwork for transformer-based NLP.",
+          image: "https://via.placeholder.com/150?text=GPT",
           links: [{ text: "GPT Research", url: "https://openai.com/research/" }],
-          details: "GPT demonstrated the potential of transformer-based language models, sparking a new era in natural language processing."
+          details:
+            "GPT demonstrated the potential of transformer-based models and sparked a new era in natural language processing."
         },
         {
           date: "February 2019",
           title: "GPT-2 Launched",
-          description: "GPT-2 shows coherent and contextually relevant text generation over long passages.",
+          description:
+            "GPT-2 shows coherent text generation over long passages.",
+          image: "https://via.placeholder.com/150?text=GPT-2",
           links: [{ text: "GPT-2 Announcement", url: "https://openai.com/blog/better-language-models/" }],
-          details: "GPT-2 significantly improved text quality and raised discussions about AI safety and responsible use."
+          details:
+            "GPT-2 significantly improved text quality and ignited discussions about AI safety and responsible deployment."
         },
         {
           date: "June 2020",
           title: "GPT-3 Released",
-          description: "GPT-3 debuts with 175 billion parameters, revolutionizing natural language processing.",
+          description:
+            "GPT-3 debuts with 175 billion parameters, revolutionizing language understanding.",
+          image: "https://via.placeholder.com/150?text=GPT-3",
           links: [{ text: "GPT-3 Overview", url: "https://openai.com/blog/openai-api/" }],
-          details: "This release marked a major leap in capability, paving the way for fine-tuning and custom applications (i.e. custom GPTs)."
+          details:
+            "A major leap in capability, GPT-3 paved the way for custom fine-tuning and domain-specific applications."
         },
         {
           date: "November 2022",
           title: "ChatGPT Launched",
-          description: "ChatGPT, based on GPT-3.5, is released and becomes widely recognized for its conversational abilities.",
+          description:
+            "ChatGPT, based on GPT-3.5, becomes widely recognized for its conversational abilities.",
+          image: "https://via.placeholder.com/150?text=ChatGPT",
           links: [{ text: "ChatGPT", url: "https://chat.openai.com" }],
-          details: "ChatGPT popularized conversational AI, demonstrating how fine-tuned models can be tailored (custom GPTs) for interactive applications."
+          details:
+            "ChatGPT showcased how fine-tuned models can be tailored for interactive, user-friendly applications."
         },
         {
           date: "March 2023",
           title: "GPT-4 Introduced",
-          description: "GPT-4 is unveiled with multimodal capabilities, processing both text and images.",
+          description:
+            "GPT-4 is unveiled with multimodal capabilities, processing both text and images.",
+          image: "https://via.placeholder.com/150?text=GPT-4",
           links: [{ text: "GPT-4 Announcement", url: "https://openai.com/research/gpt-4" }],
-          details: "GPT-4 improved reasoning, creativity, and task completion, further solidifying the basis for custom adaptations."
-        },
-        {
-          date: "2023-2024",
-          title: "Google's Gemini Series",
-          description: "Google unveils Gemini, a multimodal model integrated into Bard and other services.",
-          links: [{ text: "Google Gemini", url: "https://blog.google/technology/ai/announcing-gemini/" }],
-          details: "Gemini represents Google's advancement in AI with models designed for diverse tasks and modalities."
-        },
-        {
-          date: "2024",
-          title: "Claude 3 Series",
-          description: "Anthropic releases the Claude 3 family (Haiku, Sonnet, Opus) with enhanced reasoning and safety features.",
-          links: [{ text: "Claude 3 Overview", url: "https://www.anthropic.com/claude" }],
-          details: "The Claude 3 series focuses on safer AI development and improved reasoning capabilities."
+          details:
+            "GPT-4 improved reasoning, creativity, and task completion, reinforcing the foundation for custom adaptations."
         },
         {
           date: "May 2024",
           title: "GPT-4o ('Omni') Announced",
-          description: "GPT-4o is announced as an upgraded version with faster processing and broader capabilities.",
+          description:
+            "GPT-4o offers faster processing and broader capabilities than GPT-4.",
+          image: "https://via.placeholder.com/150?text=GPT-4o",
           links: [{ text: "GPT-4o Details", url: "https://openai.com/blog/gpt-4o/" }],
-          details: "GPT-4o enhanced processing speed and domain versatility, further broadening AI applications."
+          details:
+            "GPT-4o enhanced processing speed and domain versatility, further expanding AI applications."
         },
         {
           date: "September 2024",
           title: "o1-preview & o1-mini Released",
-          description: "New models that 'think' before responding are introduced, boosting performance on complex reasoning tasks.",
+          description:
+            "New models (O1 series) that 'think' before responding boost performance on complex tasks.",
+          image: "https://via.placeholder.com/150?text=O1+Preview",
           links: [{ text: "o1-mini Info", url: "https://openai.com/blog/o1-mini/" }],
-          details: "These models incorporate advanced reasoning techniques that improve performance on challenging tasks."
+          details:
+            "The O1 series introduces innovative reasoning methods, differentiating them from GPT-4 series by emphasizing structured problem-solving."
         },
         {
           date: "December 2024",
           title: "Full Release of o1",
-          description: "The complete version of o1 is released, enhancing capabilities in competitive programming, mathematics, and science.",
+          description:
+            "The complete O1 model is released, enhancing competitive programming, math, and science capabilities.",
+          image: "https://via.placeholder.com/150?text=O1+Full",
           links: [{ text: "o1 Full Release", url: "https://openai.com/blog/o1-full-release/" }],
-          details: "The full release marked a substantial improvement in technical and scientific problem-solving abilities."
+          details:
+            "O1's full release significantly advances technical and scientific problem-solving, setting the stage for custom model adaptations."
         },
         {
           date: "January 2025",
           title: "o3-mini & o3-mini-high Launched",
-          description: "Successors to o1-mini are launched, offering advanced reasoning for complex problem solving.",
+          description:
+            "Successors to O1-mini are launched as the O3 series, offering even more advanced reasoning.",
+          image: "https://via.placeholder.com/150?text=O3+Series",
           links: [{ text: "o3-mini Overview", url: "https://openai.com/blog/o3-mini/" }],
-          details: "These successors further improve reasoning capabilities, making them ideal for specialized applications."
+          details:
+            "The O3 series builds on O1’s innovations, optimizing complex problem solving and specialized applications distinct from the GPT-4 family."
         },
         {
           date: "February 2025",
           title: "'Deep Research' Released",
-          description: "A service combining advanced reasoning and web search capabilities is released to generate comprehensive reports.",
+          description:
+            "A service combining advanced reasoning and web search capabilities generates comprehensive reports.",
+          image: "https://via.placeholder.com/150?text=Deep+Research",
           links: [{ text: "Deep Research Tool", url: "https://openai.com/blog/deep-research/" }],
-          details: "This service represents a significant step towards autonomous, comprehensive AI-driven research."
+          details:
+            "This tool represents a significant step toward autonomous, AI-driven research and data analysis."
+        },
+        {
+          date: "2023-2024",
+          title: "Google's Gemini Series",
+          description:
+            "Google unveils Gemini, a multimodal model integrated into Bard and other services.",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/368px-Google_2015_logo.svg.png",
+          links: [{ text: "Google Gemini", url: "https://blog.google/technology/ai/announcing-gemini/" }],
+          details:
+            "Gemini marks Google's leap forward in AI, designed to excel across diverse tasks and modalities."
+        },
+        {
+          date: "2024",
+          title: "Claude 3 Series",
+          description:
+            "Anthropic releases the Claude 3 family with enhanced reasoning and safety features.",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Anthropic_logo.png/640px-Anthropic_logo.png",
+          links: [{ text: "Claude 3 Overview", url: "https://www.anthropic.com/claude" }],
+          details:
+            "Claude 3 emphasizes safer AI practices and improved reasoning, offering a distinct alternative in the evolving AI landscape."
         }
       ].sort((a, b) => getDateValue(a.date) - getDateValue(b.date));
 
-      // TimelineItem component with fade-in animation
+      /* TimelineItem Component (with fade-in animation and collapsible details) */
       const TimelineItem = ({ item, index }) => {
         const [isExpanded, setIsExpanded] = useState(false);
         const ref = useRef(null);
-        const isLeft = index % 2 === 0;
         useEffect(() => {
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -178,15 +227,16 @@
           if (ref.current) observer.observe(ref.current);
         }, []);
         return (
-          <div ref={ref} className={`relative w-1/2 p-8 group ${isLeft ? 'text-right left-0' : 'text-left left-1/2'}`}>
-            <div className="font-bold mb-2 text-gray-600 dark:text-gray-300">{item.date}</div>
-            <div className="text-lg mb-2 font-semibold hover:text-blue-600 transition-colors duration-200">
-              {item.title}
-            </div>
+          <div ref={ref} className="min-w-[300px] bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 m-4 flex-shrink-0">
+            {item.image && (
+              <img src={item.image} alt={item.title + " image"} className="w-full h-40 object-cover rounded-md mb-4" />
+            )}
+            <div className="font-bold text-gray-600 dark:text-gray-300 mb-2">{item.date}</div>
+            <div className="text-xl font-semibold text-blue-900 dark:text-blue-300 mb-2">{item.title}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">{item.description}</div>
             {(item.details || item.links) && (
-              <div className="mt-4">
-                <button
+              <div>
+                <button 
                   onClick={() => setIsExpanded(!isExpanded)}
                   aria-expanded={isExpanded}
                   className="flex items-center text-blue-600 hover:text-blue-800 text-sm focus:outline-none"
@@ -204,7 +254,7 @@
                   )}
                 </button>
                 {isExpanded && (
-                  <div className="mt-4 text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                  <div className="mt-4 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded">
                     {item.details && <p className="mb-4">{item.details}</p>}
                     {item.links && item.links.length > 0 && (
                       <div className="space-y-2">
@@ -226,72 +276,71 @@
                 )}
               </div>
             )}
-            <div className={`absolute top-8 w-5 h-5 rounded-full bg-yellow-500 border-4 border-blue-900 dark:border-blue-300 z-10 transition-all duration-300 group-hover:scale-125 ${isLeft ? '-right-2.5' : '-left-2.5'}`} />
           </div>
         );
       };
 
-      // Timeline component with search filter
+      /* Horizontal Timeline Component with search filter */
       const Timeline = () => {
         const [searchQuery, setSearchQuery] = useState("");
         const filteredData = timelineData.filter(item => {
-          const searchLower = searchQuery.toLowerCase();
-          return item.title.toLowerCase().includes(searchLower) ||
-            item.description.toLowerCase().includes(searchLower) ||
-            (item.details && item.details.toLowerCase().includes(searchLower));
+          const q = searchQuery.toLowerCase();
+          return item.title.toLowerCase().includes(q) ||
+                 item.description.toLowerCase().includes(q) ||
+                 (item.details && item.details.toLowerCase().includes(q));
         });
         return (
-          <div className="w-11/12 max-w-5xl mx-auto p-8">
-            <h1 className="text-center mb-10 text-blue-900 dark:text-blue-300 text-3xl font-bold">
-              AI Models Timeline
-            </h1>
-            <div className="mb-8">
+          <div className="w-full p-8">
+            <h1 className="text-center text-3xl font-bold text-blue-900 dark:text-blue-300 mb-6">AI Models Timeline</h1>
+            <div className="max-w-md mx-auto mb-6">
               <input 
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search timeline..."
+                placeholder="Search timeline events..."
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
                 aria-label="Search timeline events"
               />
             </div>
-            <div className="relative my-8 py-8">
-              <div className="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-full bg-blue-900 dark:bg-blue-300" />
-              {filteredData.map((item, index) => (
-                <TimelineItem key={index} item={item} index={index} />
-              ))}
+            <div className="overflow-x-auto">
+              <div className="flex space-x-4 pb-4">
+                {filteredData.map((item, index) => (
+                  <TimelineItem key={index} item={item} index={index} />
+                ))}
+              </div>
             </div>
           </div>
         );
       };
 
-      // Overview component explaining GPTs and Custom GPTs
+      /* Overview Component explaining GPTs & Custom GPTs */
       const Overview = () => (
-        <div className="w-11/12 max-w-5xl mx-auto p-8 mb-12">
-          <h2 className="text-center text-2xl text-blue-900 dark:text-blue-300 font-bold mb-4">
-            Understanding GPTs & Custom GPTs
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models using the transformer architecture to generate human-like text. They are pre-trained on massive datasets and fine-tuned for specific tasks.
-          </p>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            <strong>Custom GPTs</strong> build upon these models by tailoring their behavior and fine-tuning for specialized domains. This customization bridges the gap between general AI and domain-specific expertise. Learn more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Custom GPTs</a>.
-          </p>
-          <p className="text-gray-700 dark:text-gray-300">
-            Below is a detailed timeline tracing the evolution of these models—from the original GPT to the latest innovations from OpenAI, Google, and Anthropic.
-          </p>
+        <div className="max-w-4xl mx-auto p-8">
+          <h2 className="text-center text-2xl font-bold text-blue-900 dark:text-blue-300 mb-4">Understanding GPTs & Custom GPTs</h2>
+          <div className="flex flex-col md:flex-row items-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/OpenAI_Logo.svg/1024px-OpenAI_Logo.svg.png" alt="OpenAI Logo" className="w-40 h-40 object-contain mx-auto mb-4 md:mb-0 md:mr-8" />
+            <div className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="mb-4">
+                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models based on the transformer architecture that generate human-like text. Pre-trained on massive datasets, these models are fine-tuned for specific tasks.
+              </p>
+              <p className="mb-4">
+                <strong>Custom GPTs</strong> leverage the base GPT models and are fine-tuned or modified to meet specialized domain requirements. This allows for tailored applications—ranging from creative writing to technical research.
+              </p>
+              <p>
+                Explore more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Custom GPTs</a>.
+              </p>
+            </div>
+          </div>
         </div>
       );
 
-      // Back to Top button component
+      /* Back-to-Top Button */
       const BackToTop = () => {
         const [visible, setVisible] = useState(false);
         useEffect(() => {
-          const toggleVisibility = () => {
-            setVisible(window.scrollY > 300);
-          };
-          window.addEventListener('scroll', toggleVisibility);
-          return () => window.removeEventListener('scroll', toggleVisibility);
+          const onScroll = () => setVisible(window.scrollY > 300);
+          window.addEventListener('scroll', onScroll);
+          return () => window.removeEventListener('scroll', onScroll);
         }, []);
         return (
           visible && (
@@ -306,7 +355,7 @@
         );
       };
 
-      // Main App component with header, dark mode toggle, overview, timeline, and back-to-top button.
+      /* Main App Component */
       const App = () => (
         <div className="w-full">
           <header className="flex justify-between items-center p-4 bg-blue-100 dark:bg-gray-800">
