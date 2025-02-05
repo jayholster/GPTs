@@ -14,7 +14,7 @@
     <!-- lucide-react UMD build -->
     <script src="https://unpkg.com/lucide-react/dist/index.umd.js"></script>
     <style>
-      /* Custom fade-in animation */
+      /* Fade-in animation */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -22,18 +22,17 @@
       .animate-fadeIn {
         animation: fadeIn 0.8s forwards;
       }
-      /* Modal backdrop styling */
+      /* Modal backdrop style */
       .modal-backdrop {
         background-color: rgba(0, 0, 0, 0.5);
       }
     </style>
   </head>
-  <body class="bg-white dark:bg-gray-900 transition-colors">
+  <body class="bg-gray-100">
     <div id="root"></div>
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
-      
-      // Destructure lucide-react icons from global "lucideReact"
+      // Destructure lucide-react icons from the global "lucideReact" variable
       const {
         Rocket,
         Dumbbell,
@@ -53,27 +52,16 @@
         ChevronUp,
         XCircle
       } = lucideReact;
-      
-      /* Function to toggle dark mode */
-      const toggleDarkMode = () => {
-        document.documentElement.classList.toggle('dark');
-      };
 
-      /* Function to toggle layout between horizontal and vertical */
-      const toggleLayout = (current) => (current === 'horizontal' ? 'vertical' : 'horizontal');
-
-      /* Helper: Convert a date string into a Date object for sorting */
+      // Helper function: Convert date string to Date object for sorting.
       const getDateValue = (dateStr) => {
-        // For a date like "2023-2024", we sort by the first year.
         if (dateStr.includes('-')) {
           return new Date(dateStr.split('-')[0]);
         }
         return new Date(dateStr);
       };
 
-      /* Timeline data in chronological order.
-         The data is sorted ascending (earliest first) to clearly illustrate evolution.
-      */
+      // Timeline data in chronological order (earliest first).
       const timelineData = [
         {
           date: "December 2015",
@@ -107,13 +95,13 @@
           date: "June 2020",
           title: "GPT-3 Released",
           description: "GPT-3 debuts with 175 billion parameters, revolutionizing NLP.",
-          details: "Paved the way for fine-tuning and custom applications (Custom GPTs).",
+          details: "Paved the way for fine-tuning and custom applications.",
           Icon: Robot
         },
         {
           date: "November 2022",
           title: "ChatGPT Launched",
-          description: "ChatGPT, based on GPT-3.5, gains widespread recognition for its conversational abilities.",
+          description: "ChatGPT, based on GPT-3.5, gains recognition for its conversational abilities.",
           details: "Popularized conversational AI and custom-tailored models for interactive use.",
           Icon: MessageSquare
         },
@@ -121,14 +109,14 @@
           date: "March 2023",
           title: "GPT-4 Introduced",
           description: "GPT-4 is unveiled with multimodal capabilities, processing text and images.",
-          details: "Enhanced reasoning, creativity, and task completion, a major evolution from GPT-3.",
+          details: "Enhanced reasoning, creativity, and task completion mark a major evolution.",
           Icon: Monitor
         },
         {
           date: "May 2024",
           title: "GPT-4o ('Omni') Announced",
           description: "GPT-4o offers faster processing and broader capabilities than GPT-4.",
-          details: "Expanded performance and speed, highlighting iterative improvements.",
+          details: "Expanded performance and speed highlight iterative improvements.",
           Icon: Zap
         },
         {
@@ -175,38 +163,29 @@
         }
       ].sort((a, b) => getDateValue(a.date) - getDateValue(b.date));
 
-      /* MODAL COMPONENT for expanded timeline details */
-      const Modal = ({ item, onClose }) => {
-        return (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="absolute inset-0 modal-backdrop" onClick={onClose}></div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg mx-auto z-50 p-6 relative animate-fadeIn">
-              <button
-                onClick={onClose}
-                className="absolute top-2 right-2 text-blue-600 hover:text-blue-800 focus:outline-none"
-                aria-label="Close modal"
-              >
-                <XCircle className="w-6 h-6" />
+      // Modal component for showing expanded details.
+      const Modal = ({ item, onClose }) => (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
+          <div className="bg-white rounded-lg shadow-xl max-w-lg mx-auto z-50 p-6 animate-fadeIn">
+            <button onClick={onClose} className="absolute top-2 right-2 text-blue-600 focus:outline-none" aria-label="Close modal">
+              <XCircle className="w-6 h-6" />
+            </button>
+            <div className="mb-4 flex justify-center">
+              {item.Icon && <item.Icon className="w-16 h-16 text-blue-600" />}
+            </div>
+            <h2 className="text-2xl font-bold text-blue-900 mb-2 text-center">{item.title}</h2>
+            <div className="text-gray-700 mb-4">{item.details}</div>
+            <div className="text-center">
+              <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none">
+                Close
               </button>
-              <div className="mb-4 flex justify-center">
-                {item.Icon && <item.Icon className="w-16 h-16 text-blue-600" />}
-              </div>
-              <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-300 mb-2 text-center">{item.title}</h2>
-              <div className="text-gray-700 dark:text-gray-300 mb-4">{item.details}</div>
-              <div className="text-center">
-                <button
-                  onClick={onClose}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none"
-                >
-                  Close
-                </button>
-              </div>
             </div>
           </div>
-        );
-      };
+        </div>
+      );
 
-      /* TIMELINE ITEM COMPONENT */
+      // TimelineItem component
       const TimelineItem = ({ item, index, onOpenModal, layout }) => {
         const ref = useRef(null);
         const isLeft = layout === "vertical" ? true : index % 2 === 0;
@@ -214,7 +193,7 @@
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fadeIn');
+                entry.target.classList.add("animate-fadeIn");
                 observer.unobserve(entry.target);
               }
             });
@@ -226,27 +205,24 @@
             <div className="flex justify-center mb-4">
               {item.Icon && <item.Icon className="w-16 h-16 text-blue-600" />}
             </div>
-            <div className="font-bold mb-2 text-gray-600 dark:text-gray-300">{item.date}</div>
-            <div className="text-xl font-semibold text-blue-900 dark:text-blue-300 mb-2">{item.title}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">{item.description}</div>
+            <div className="font-bold mb-2 text-gray-600">{item.date}</div>
+            <div className="text-xl font-semibold text-blue-900 mb-2">{item.title}</div>
+            <div className="text-sm text-gray-600 mb-4">{item.description}</div>
             <div className="flex justify-center">
-              <button
-                onClick={() => onOpenModal(item)}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none flex items-center"
-              >
+              <button onClick={() => onOpenModal(item)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none flex items-center">
                 <ChevronDown className="w-4 h-4 mr-1" />
                 <span>Learn More</span>
               </button>
             </div>
-            <div className={`absolute top-6 w-5 h-5 rounded-full bg-yellow-500 border-4 border-blue-900 dark:border-blue-300 z-10 transition-all duration-300 group-hover:scale-125 ${layout === 'vertical' ? "left-2" : (isLeft ? "-right-2.5" : "-left-2.5")}`}></div>
+            <div className={`absolute top-6 w-5 h-5 rounded-full bg-yellow-500 border-4 border-blue-900 z-10 transition-all duration-300 group-hover:scale-125 ${layout === 'vertical' ? "left-2" : (isLeft ? "-right-2.5" : "-left-2.5")}`}></div>
           </div>
         );
       };
 
-      /* TIMELINE COMPONENT */
+      // Timeline component with search filter and layout toggle.
       const Timeline = () => {
         const [searchQuery, setSearchQuery] = useState("");
-        const [layout, setLayout] = useState("horizontal"); // horizontal or vertical layout
+        const [layout, setLayout] = useState("horizontal");
         const [modalItem, setModalItem] = useState(null);
         const filteredData = timelineData.filter(item => {
           const q = searchQuery.toLowerCase();
@@ -256,7 +232,7 @@
         });
         return (
           <div className="w-full p-8">
-            <h1 className="text-center text-4xl font-bold text-blue-900 dark:text-blue-300 mb-6">AI Models Timeline</h1>
+            <h1 className="text-center text-4xl font-bold text-blue-900 mb-6">AI Models Timeline</h1>
             <div className="max-w-md mx-auto mb-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
               <input
                 type="text"
@@ -266,11 +242,8 @@
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500"
                 aria-label="Search timeline events"
               />
-              <button
-                onClick={() => setLayout(toggleLayout(layout))}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none"
-              >
-                {layout === "horizontal" ? "Switch to Vertical" : "Switch to Horizontal"}
+              <button onClick={() => setLayout(layout === "horizontal" ? "vertical" : "horizontal")} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
+                {layout === "horizontal" ? "Vertical Layout" : "Horizontal Layout"}
               </button>
             </div>
             {layout === "horizontal" ? (
@@ -288,27 +261,25 @@
                 ))}
               </div>
             )}
-            {modalItem && (
-              <Modal item={modalItem} onClose={() => setModalItem(null)} />
-            )}
+            {modalItem && <Modal item={modalItem} onClose={() => setModalItem(null)} />}
           </div>
         );
       };
 
-      /* OVERVIEW COMPONENT */
+      // Overview component explaining GPTs & Custom GPTs.
       const Overview = () => (
         <div className="max-w-4xl mx-auto p-8">
-          <h2 className="text-center text-3xl font-bold text-blue-900 dark:text-blue-300 mb-4">Understanding GPTs & Custom GPTs</h2>
+          <h2 className="text-center text-3xl font-bold text-blue-900 mb-4">Understanding GPTs & Custom GPTs</h2>
           <div className="flex flex-col md:flex-row items-center">
             <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
               <Rocket className="w-24 h-24 text-blue-600" />
             </div>
-            <div className="text-gray-700 dark:text-gray-300 text-lg">
+            <div className="text-gray-700 text-lg">
               <p className="mb-4">
-                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models based on the transformer architecture, pre-trained on massive datasets and fine-tuned for specific tasks.
+                <strong>Generative Pre-trained Transformers (GPTs)</strong> are deep learning models based on transformer architecture, pre-trained on massive datasets and fine-tuned for specific tasks.
               </p>
               <p className="mb-4">
-                <strong>Custom GPTs</strong> build upon these models by tailoring their behavior to specialized domains, bridging the gap between general AI and domain-specific expertise.
+                <strong>Custom GPTs</strong> build upon these models by tailoring their behavior for specialized domains, bridging the gap between general AI and domain-specific expertise.
               </p>
               <p>
                 Explore more about <a href="https://openai.com/custom-gpts" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">Custom GPTs</a>.
@@ -318,37 +289,28 @@
         </div>
       );
 
-      /* BACK TO TOP BUTTON COMPONENT */
+      // BackToTop button component.
       const BackToTop = () => {
         const [visible, setVisible] = useState(false);
         useEffect(() => {
           const onScroll = () => setVisible(window.scrollY > 300);
-          window.addEventListener('scroll', onScroll);
-          return () => window.removeEventListener('scroll', onScroll);
+          window.addEventListener("scroll", onScroll);
+          return () => window.removeEventListener("scroll", onScroll);
         }, []);
         return (
           visible && (
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="fixed bottom-8 right-8 p-3 bg-blue-600 dark:bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none"
-              aria-label="Back to Top"
-            >
+            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="fixed bottom-8 right-8 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none" aria-label="Back to Top">
               ↑
             </button>
           )
         );
       };
 
-      /* MAIN APP COMPONENT */
+      // Main App component.
       const App = () => (
         <div className="w-full">
-          <header className="flex justify-between items-center p-4 bg-blue-100 dark:bg-gray-800">
-            <h1 className="text-2xl font-bold text-blue-900 dark:text-blue-300">AI Models Timeline</h1>
-            <div className="flex space-x-4">
-              <button onClick={toggleDarkMode} className="px-3 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded focus:outline-none" aria-label="Toggle Dark Mode">
-                Toggle Dark Mode
-              </button>
-            </div>
+          <header className="flex justify-between items-center p-4 bg-blue-100">
+            <h1 className="text-2xl font-bold text-blue-900">AI Models Timeline</h1>
           </header>
           <Overview />
           <Timeline />
